@@ -1,0 +1,417 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Para el amor de mi vida ❤️</title>
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️</text></svg>">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Pacifico&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* Canvas del árbol - izquierda, centrado */
+        #canvas-tree {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            z-index: 7;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            #canvas-tree {
+                width: 100% !important;
+                height: 40vh !important;
+                top: auto !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                z-index: 5 !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #canvas-tree {
+                height: 35vh !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- === FONDO CAMPO FLORIDO COLORIDO === -->
+    <div class="field-background">
+
+        <!-- Cielo con nubes coloridas -->
+        <div class="sky">
+            <!-- Sol estilo anime -->
+            <div class="anime-sun">
+                <div class="sun-core"></div>
+                <div class="sun-glow"></div>
+                <div class="sun-rays"></div>
+            </div>
+
+            <div class="clouds-layer clouds-back"></div>
+            <div class="clouds-layer clouds-mid"></div>
+            <div class="clouds-layer clouds-front"></div>
+        </div>
+
+
+        <!-- Estrellas sutiles -->
+        <div id="stars-container" class="stars-container"></div>
+
+        <!-- Gaviotas (generadas por JS) -->
+        <div id="seagulls-container" class="seagulls-container"></div>
+
+        <!-- Aves silueta (representando a la pareja) -->
+        <div class="love-birds">
+            <div class="bird bird-1">
+                <div class="bird-body"></div>
+                <div class="bird-wing"></div>
+            </div>
+            <div class="bird bird-2">
+                <div class="bird-body"></div>
+                <div class="bird-wing"></div>
+            </div>
+        </div>
+
+        <!-- Nubes Anime Estilizadas (base violeta, anchas) -->
+        <div class="clouds-container">
+            <div class="anime-cloud anime-cloud-1"></div>
+            <div class="anime-cloud anime-cloud-2"></div>
+            <div class="anime-cloud anime-cloud-3"></div>
+            <div class="anime-cloud anime-cloud-4"></div>
+        </div>
+
+        <!-- Colinas Suaves Kawaii con Perspectiva Atmosférica -->
+        <div class="mountains-container">
+            <!-- SVG Definitions: Gradientes y filtro suave -->
+            <svg class="svg-filters" style="position: absolute; width: 0; height: 0;">
+                <defs>
+                    <!-- Filtro suave de vegetación (textura orgánica leve) -->
+                    <filter id="softVeg" x="-5%" y="-5%" width="110%" height="110%">
+                        <feTurbulence type="fractalNoise" baseFrequency="0.04 0.06" numOctaves="3" seed="7"
+                            result="vn" />
+                        <feDisplacementMap in="SourceGraphic" in2="vn" scale="4" />
+                    </filter>
+
+                    <!-- Gradiente Colina Lejana: gris niebla a pizarra -->
+                    <linearGradient id="hillBackGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#90A4AE" />
+                        <stop offset="40%" stop-color="#78909C" />
+                        <stop offset="100%" stop-color="#546E7A" />
+                    </linearGradient>
+
+                    <!-- Gradiente Colina Media-Lejana: verde suave desaturado -->
+                    <linearGradient id="hillMidBackGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#8cb888" />
+                        <stop offset="40%" stop-color="#78a878" />
+                        <stop offset="100%" stop-color="#5a8a5a" />
+                    </linearGradient>
+
+                    <!-- Gradiente Colina Media: verde prado vibrante -->
+                    <linearGradient id="hillMidGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#6aaa58" />
+                        <stop offset="30%" stop-color="#5a9a4a" />
+                        <stop offset="100%" stop-color="#3d7a35" />
+                    </linearGradient>
+
+                    <!-- Gradiente Colina Frontal: verde cálido oscuro -->
+                    <linearGradient id="hillFrontGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#5a9a50" />
+                        <stop offset="25%" stop-color="#4a8a42" />
+                        <stop offset="70%" stop-color="#357830" />
+                        <stop offset="100%" stop-color="#2d5a25" />
+                    </linearGradient>
+
+                    <!-- Gradiente para highlights de sol en colinas -->
+                    <linearGradient id="hillSunHighlight" x1="100%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="rgba(255,250,220,0.25)" />
+                        <stop offset="100%" stop-color="rgba(255,250,220,0)" />
+                    </linearGradient>
+                </defs>
+            </svg>
+
+            <!-- Capa 1: Colina Lejana — verde-menta azulado pálido, formas muy suaves -->
+            <svg class="hill-svg hill-back" viewBox="0 0 1440 400" preserveAspectRatio="none">
+                <path fill="url(#hillBackGrad)" d="M0,400 L0,220
+                       C80,200 140,185 220,175
+                       C320,162 380,190 480,170
+                       C560,155 620,130 720,125
+                       C800,120 880,145 960,135
+                       C1060,122 1120,100 1200,110
+                       C1280,118 1340,140 1440,128
+                       L1440,400 Z" />
+                <!-- Bruma atmosférica sutil sobre la colina lejana -->
+                <path fill="rgba(180,210,230,0.2)" d="M0,400 L0,240
+                       C120,225 240,210 360,200
+                       C480,190 600,175 720,165
+                       C840,158 960,170 1080,162
+                       C1200,155 1320,168 1440,158
+                       L1440,400 Z" />
+            </svg>
+
+            <!-- Capa 2: Colina Media-Lejana — verde suave moderado -->
+            <svg class="hill-svg hill-mid-back" viewBox="0 0 1440 400" preserveAspectRatio="none">
+                <path fill="url(#hillMidBackGrad)" filter="url(#softVeg)" d="M0,400 L0,260
+                       C60,248 130,235 200,240
+                       C300,248 370,220 460,215
+                       C530,210 620,238 720,225
+                       C820,212 890,195 980,200
+                       C1080,206 1160,230 1250,218
+                       C1330,208 1400,225 1440,215
+                       L1440,400 Z" />
+                <!-- Toque de luz solar lateral -->
+                <path fill="rgba(255,248,220,0.12)" d="M700,225
+                       C820,212 890,195 980,200
+                       C1080,206 1160,230 1250,218
+                       C1330,208 1400,225 1440,215
+                       L1440,400 L700,400 Z" />
+            </svg>
+
+            <!-- Capa 3: Colina Media — verde prado vibrante (donde están los personajes) -->
+            <svg class="hill-svg hill-mid" viewBox="0 0 1440 400" preserveAspectRatio="none">
+                <path fill="url(#hillMidGrad)" filter="url(#softVeg)" d="M0,400 L0,290
+                       C100,278 160,295 260,280
+                       C340,268 410,255 500,260
+                       C600,266 680,248 780,255
+                       C860,260 940,275 1040,265
+                       C1140,256 1220,240 1300,248
+                       C1380,254 1420,268 1440,260
+                       L1440,400 Z" />
+                <!-- Highlight de luz solar (lado derecho, donde está el sol) -->
+                <path fill="rgba(255,250,200,0.15)" d="M780,255
+                       C860,260 940,275 1040,265
+                       C1140,256 1220,240 1300,248
+                       C1380,254 1420,268 1440,260
+                       L1440,400 L780,400 Z" />
+            </svg>
+
+            <!-- Capa 4: Colina Frontal — verde cálido oscuro, primer plano inferior -->
+            <svg class="hill-svg hill-front" viewBox="0 0 1440 400" preserveAspectRatio="none">
+                <path fill="url(#hillFrontGrad)" filter="url(#softVeg)" d="M0,400 L0,310
+                       C70,305 150,320 250,312
+                       C360,302 430,290 540,295
+                       C640,300 720,315 840,308
+                       C940,300 1020,288 1120,293
+                       C1220,298 1300,312 1380,305
+                       C1420,302 1440,308 1440,305
+                       L1440,400 Z" />
+                <!-- Sombra profunda en la base -->
+                <path fill="rgba(20,40,18,0.2)" d="M0,400 L0,360
+                       C200,355 400,365 600,358
+                       C800,352 1000,362 1200,356
+                       C1350,352 1440,358 1440,355
+                       L1440,400 Z" />
+            </svg>
+
+            <!-- God Rays / Bloom Effect -->
+            <div class="god-rays"></div>
+        </div>
+
+        <!-- Vignette Overlay (sombra en esquinas para look de ilustración) -->
+        <div class="vignette-overlay"></div>
+
+        <!-- Film Grain / Noise Overlay (grano de película sutil) -->
+        <div class="noise-overlay"></div>
+
+
+
+        <!-- Pareja anime caminando hacia el horizonte (en el centro) -->
+        <div class="couple-silhouette">
+            <!-- Sombra de contacto (pies en el suelo) -->
+            <div class="couple-contact-shadow"></div>
+            <!-- Él (1.90m - más alto) -->
+            <div class="person person-him">
+                <div class="person-head him-head"></div>
+                <div class="person-hair him-hair"></div>
+                <div class="person-body him-body"></div>
+                <div class="person-arm him-arm-inner"></div>
+                <div class="person-legs him-legs"></div>
+            </div>
+            <!-- Ella (1.55m - más bajita) -->
+            <div class="person person-her">
+                <div class="person-head her-head"></div>
+                <div class="person-hair her-hair"></div>
+                <div class="person-body her-body"></div>
+                <div class="person-arm her-arm-inner"></div>
+                <div class="person-legs her-legs"></div>
+            </div>
+            <!-- Manos unidas -->
+            <div class="holding-hands"></div>
+        </div>
+
+        <!-- Flores distantes (cerca de las montañas para profundidad) -->
+        <div class="distant-flowers">
+            <div class="flower-dots flower-dots-far"></div>
+            <div class="flower-dots flower-dots-mid"></div>
+        </div>
+
+        <!-- Bosque/árboles en el fondo -->
+        <div class="forest">
+            <div class="trees trees-back"></div>
+            <div class="trees trees-front"></div>
+        </div>
+
+        <!-- Camino nupcial de pétalos -->
+        <div class="wedding-path"></div>
+
+        <!-- Contenedor de hojas cayendo -->
+        <div id="falling-leaves-container" class="falling-leaves-container"></div>
+
+        <!-- Campo de flores principal (flores generadas por JS) -->
+        <div class="flower-field">
+            <div class="grass-layer"></div>
+            <div class="flowers-container" id="flowers-container"></div>
+        </div>
+
+        <!-- Mariposas animadas (variadas) -->
+        <div class="butterflies-container">
+            <span class="butterfly butterfly-1">🦋</span>
+            <span class="butterfly butterfly-2">🦋</span>
+            <span class="butterfly butterfly-3">🦋</span>
+            <span class="butterfly butterfly-4">🦋</span>
+            <span class="butterfly butterfly-5">🦋</span>
+            <span class="butterfly butterfly-6">🦋</span>
+            <span class="butterfly butterfly-7">🦋</span>
+        </div>
+    </div>
+
+    <!-- Decoraciones flotantes -->
+    <div id="dynamic-bg" class="background-decorations"></div>
+
+    <!-- Esquinas decorativas -->
+    <div id="corners" class="corners-container">
+        <div class="corner-decoration top-left">🌷❤️</div>
+        <div class="corner-decoration top-right">❤️🌸</div>
+        <div class="corner-decoration bottom-left">🍜✨</div>
+        <div class="corner-decoration bottom-right">🎵❤️</div>
+    </div>
+
+    <!-- === PANTALLA INTRO - CAJA DE REGALO === -->
+    <section id="pantalla-intro" class="pantalla activa">
+        <div class="gift-intro-container">
+            <!-- Instrucción -->
+            <p class="gift-instruction">Toca el regalo para abrirlo</p>
+
+            <!-- Caja de regalo -->
+            <div id="gift-box" class="gift-box" onclick="clickGiftBox()">
+                <!-- Tapa de la caja -->
+                <div class="gift-lid">
+                    <div class="lid-top"></div>
+                    <div class="lid-front"></div>
+                </div>
+
+                <!-- Lazo/Moño -->
+                <div class="gift-ribbon">
+                    <div class="ribbon-vertical"></div>
+                    <div class="ribbon-horizontal"></div>
+                    <div class="bow">
+                        <div class="bow-left"></div>
+                        <div class="bow-right"></div>
+                        <div class="bow-center"></div>
+                        <div class="bow-tail-left"></div>
+                        <div class="bow-tail-right"></div>
+                    </div>
+                </div>
+
+                <!-- Cuerpo de la caja -->
+                <div class="gift-body">
+                    <div class="gift-front"></div>
+                </div>
+
+                <!-- Contador de clicks (para debug visual) -->
+                <div id="click-counter" class="click-counter">0</div>
+            </div>
+
+            <!-- Mensaje motivacional -->
+            <p id="gift-message" class="gift-message">Haz click para que crezca...</p>
+        </div>
+    </section>
+
+    <!-- === PANTALLA QUIZ === -->
+    <section id="pantalla-quiz" class="pantalla hidden">
+        <div class="quiz-card glass-card">
+            <div class="barra-tiempo-container">
+                <div id="barra-progreso" class="barra-progreso"></div>
+            </div>
+            <h2 id="pregunta-texto" class="pregunta">Cargando...</h2>
+            <div class="imagen-container">
+                <img id="pregunta-imagen" src="" alt="Foto" onerror="this.style.display='none'">
+            </div>
+            <div id="opciones-container" class="opciones-grid"></div>
+        </div>
+    </section>
+
+
+
+    <!-- === PANTALLA FINAL === -->
+    <section id="pantalla-final" class="pantalla hidden">
+
+        <!-- Canvas del árbol - IZQUIERDA -->
+        <canvas id="canvas-tree" width="1100" height="680"></canvas>
+
+        <!-- Contenido principal - DERECHA CENTRADO -->
+        <div class="final-content">
+            <!-- Foto en círculo (la foto_final.png) -->
+            <div id="slideshow" class="slideshow-container">
+                <img src="./assets/img/foto_final.png" class="slide-foto active" alt="Nuestra foto"
+                    onerror="this.style.display='none'">
+            </div>
+
+            <div id="propuesta-container" class="propuesta-textos">
+                <div class="mensaje-amor" style="opacity: 0; visibility: hidden;">
+                    <p></p>
+                    <p></p>
+                    <p class="firma-amor"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BTS -->
+        <div class="bts-audience">
+            <img src="./assets/img/1_RM.png" class="tiny-member member-side" alt="RM"
+                onerror="this.style.display='none'">
+            <img src="./assets/img/2_JIN.png" class="tiny-member member-side" alt="Jin"
+                onerror="this.style.display='none'">
+            <img src="./assets/img/3_SUGA.png" class="tiny-member member-side" alt="Suga"
+                onerror="this.style.display='none'">
+            <img src="./assets/img/7_Jungkook.png" class="tiny-member member-center" alt="Jungkook"
+                onerror="this.style.display='none'">
+            <img src="./assets/img/4_J-Hope.png" class="tiny-member member-side" alt="J-Hope"
+                onerror="this.style.display='none'">
+            <img src="./assets/img/5_jimin.png" class="tiny-member member-side" alt="Jimin"
+                onerror="this.style.display='none'">
+            <img src="./assets/img/6_V.png" class="tiny-member member-side" alt="V" onerror="this.style.display='none'">
+        </div>
+    </section>
+
+    <!-- Audio -->
+    <audio id="musica-fondo" loop></audio>
+
+    <!-- Scripts -->
+    <script src="index_files/jquery.min.js"></script>
+    <script src="index_files/jscex.min.js"></script>
+    <script src="index_files/jscex-parser.js"></script>
+    <script src="index_files/jscex-jit.js"></script>
+    <script src="index_files/jscex-builderbase.min.js"></script>
+    <script src="index_files/jscex-async.min.js"></script>
+    <script src="index_files/jscex-async-powerpack.min.js"></script>
+    <script src="index_files/functions.js" charset="utf-8"></script>
+    <script src="index_files/love.js" charset="utf-8"></script>
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>

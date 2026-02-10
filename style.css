@@ -1,0 +1,3870 @@
+/* === PALETA CAMPO FLORIDO - COHERENTE CON HOJAS DEL ÁRBOL === */
+:root {
+    /* Colores del cielo - estilo anime/ilustración */
+    --sky-top: #4a5568;
+    /* Azul grisáceo oscuro arriba */
+    --sky-violet: #7c6a9c;
+    /* Violeta */
+    --sky-pink: #e8a4b8;
+    /* Rosa suave */
+    --sky-peach: #f5c4a1;
+    /* Durazno */
+    --sky-warm: #f9d5a7;
+    /* Cálido atardecer */
+
+    /* Nubes coloridas - tonos del árbol */
+    --cloud-white: rgba(255, 248, 240, 0.9);
+    --cloud-pink: rgba(232, 164, 184, 0.8);
+    --cloud-coral: rgba(224, 122, 95, 0.6);
+    --cloud-peach: rgba(255, 183, 77, 0.5);
+
+    /* Montañas - verdes oliva */
+    --mountain-back: #5a6b4f;
+    --mountain-mid: #6b7d5a;
+    --mountain-front: #7a8e68;
+
+    /* Bosque - verde oscuro */
+    --forest-back: #2d4a3e;
+    --forest-front: #3d5a4e;
+
+    /* Campo de flores - colores AUTUMN WARM coordinados */
+    --grass: #7a8e68;
+    --grass-light: #9aae88;
+
+    /* Colores de flores (coordinados con hojas del árbol) */
+    --coral: #e07a5f;
+    --terracotta: #c84c09;
+    --mustard: #d4a845;
+    --wine: #722f37;
+    --old-gold: #cfb53b;
+    --warm-turquoise: #4db6ac;
+    --moss-green: #8a9a5b;
+    --soft-coral: #e87e87;
+    --amber: #ffb74d;
+    --warm-brown: #9c6644;
+    --flower-pink: #f5a0b5;
+    --flower-red: #d45070;
+    --flower-white: #fff8f0;
+
+    /* UI - Colores cálidos que combinan con el campo */
+    --passion-red: #dc143c;
+    --ivory: #fffff0;
+    --glass-bg: rgba(245, 180, 160, 0.7);
+    --glass-border: rgba(255, 220, 200, 0.5);
+
+    /* Gift Box Colors */
+    --gift-box-color: #e07a5f;
+    --gift-box-dark: #c84c09;
+    --gift-ribbon-color: #d45070;
+    --gift-ribbon-dark: #a03050;
+}
+
+/* === CAJA DE REGALO - EXPERIENCIA BRIDGERTON === */
+.gift-intro-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    perspective: 1000px;
+    background: #000000;
+    z-index: 9999;
+    box-sizing: border-box;
+}
+
+/* Ocultar decoraciones cuando el intro está activo */
+.gift-intro-container~.corners-container,
+.gift-intro-container~.background-decorations,
+#pantalla-intro.activa~.corners-container,
+#pantalla-intro.activa~#dynamic-bg {
+    display: none !important;
+}
+
+/* Decoraciones de esquinas siempre ocultas al inicio */
+.corners-container {
+    z-index: 9998;
+}
+
+.gift-instruction {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+    animation: pulseText 2s ease-in-out infinite;
+}
+
+@keyframes pulseText {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+}
+
+.gift-message {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    margin-top: 30px;
+    transition: all 0.3s ease;
+}
+
+/* La caja de regalo principal */
+.gift-box {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    animation: floatGift 3s ease-in-out infinite;
+}
+
+.gift-box:hover {
+    transform: scale(1.05);
+}
+
+.gift-box:active {
+    animation: clickBounce 0.3s ease;
+}
+
+@keyframes floatGift {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes clickBounce {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Cuerpo de la caja */
+.gift-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    background: linear-gradient(135deg, var(--gift-box-color) 0%, var(--gift-box-dark) 100%);
+    border-radius: 5px;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        inset 0 -5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.gift-front {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg,
+            rgba(255, 255, 255, 0.2) 0%,
+            transparent 50%);
+    border-radius: 5px;
+}
+
+/* Tapa de la caja */
+.gift-lid {
+    position: absolute;
+    top: 0;
+    left: -5%;
+    width: 110%;
+    height: 35%;
+    z-index: 2;
+    transition: transform 0.5s ease;
+}
+
+.lid-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background: linear-gradient(135deg, var(--gift-box-color) 0%, var(--gift-box-dark) 100%);
+    border-radius: 5px 5px 0 0;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.lid-front {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(180deg, var(--gift-box-dark) 0%, var(--gift-box-color) 100%);
+}
+
+/* Cinta y moño */
+.gift-ribbon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    transition: all 0.5s ease;
+}
+
+.ribbon-vertical {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 20%;
+    height: 100%;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg,
+            var(--gift-ribbon-dark) 0%,
+            var(--gift-ribbon-color) 50%,
+            var(--gift-ribbon-dark) 100%);
+    transition: all 0.5s ease;
+}
+
+.ribbon-horizontal {
+    position: absolute;
+    top: 28%;
+    left: 0;
+    width: 100%;
+    height: 15%;
+    background: linear-gradient(180deg,
+            var(--gift-ribbon-dark) 0%,
+            var(--gift-ribbon-color) 50%,
+            var(--gift-ribbon-dark) 100%);
+    transition: all 0.5s ease;
+}
+
+/* Moño */
+.bow {
+    position: absolute;
+    top: -15%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 40%;
+    z-index: 4;
+    transition: all 0.5s ease;
+}
+
+.bow-left,
+.bow-right {
+    position: absolute;
+    top: 30%;
+    width: 45%;
+    height: 70%;
+    background: var(--gift-ribbon-color);
+    border-radius: 50% 50% 50% 50%;
+    box-shadow: inset -3px -3px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s ease;
+}
+
+.bow-left {
+    left: 0;
+    transform: rotate(-30deg);
+}
+
+.bow-right {
+    right: 0;
+    transform: rotate(30deg);
+}
+
+.bow-center {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25%;
+    height: 40%;
+    background: var(--gift-ribbon-dark);
+    border-radius: 50%;
+    z-index: 5;
+}
+
+.bow-tail-left,
+.bow-tail-right {
+    position: absolute;
+    bottom: -30%;
+    width: 20%;
+    height: 60%;
+    background: var(--gift-ribbon-color);
+    transition: all 0.5s ease;
+}
+
+.bow-tail-left {
+    left: 20%;
+    transform: rotate(-15deg);
+    border-radius: 0 0 50% 50%;
+}
+
+.bow-tail-right {
+    right: 20%;
+    transform: rotate(15deg);
+    border-radius: 0 0 50% 50%;
+}
+
+/* Contador oculto */
+.click-counter {
+    display: none;
+}
+
+/* === ESTADOS DE LA CAJA - 3 CLICKS DRAMÁTICOS === */
+
+/* Click 1: Crece poco, temblor suave, lazo se afloja 33% */
+.gift-box.grow-1 {
+    transform: scale(1.3);
+}
+
+.gift-box.shake-1 {
+    animation: shake1 0.6s ease-in-out;
+}
+
+@keyframes shake1 {
+
+    0%,
+    100% {
+        transform: scale(1.3) rotate(0deg);
+    }
+
+    20% {
+        transform: scale(1.3) rotate(-3deg);
+    }
+
+    40% {
+        transform: scale(1.3) rotate(3deg);
+    }
+
+    60% {
+        transform: scale(1.3) rotate(-2deg);
+    }
+
+    80% {
+        transform: scale(1.3) rotate(2deg);
+    }
+}
+
+.gift-box.grow-1 .bow {
+    transform: translateX(-50%) rotate(8deg);
+}
+
+.gift-box.grow-1 .bow-left {
+    transform: rotate(-35deg);
+}
+
+.gift-box.grow-1 .bow-right {
+    transform: rotate(35deg);
+}
+
+.gift-box.grow-1 .ribbon-vertical {
+    opacity: 0.9;
+}
+
+/* Click 2: Crece más, temblor medio, lazo 66% desatado */
+.gift-box.grow-2 {
+    transform: scale(1.6);
+}
+
+.gift-box.shake-2 {
+    animation: shake2 0.8s ease-in-out;
+}
+
+@keyframes shake2 {
+
+    0%,
+    100% {
+        transform: scale(1.6) rotate(0deg);
+    }
+
+    10% {
+        transform: scale(1.6) rotate(-5deg);
+    }
+
+    20% {
+        transform: scale(1.6) rotate(5deg);
+    }
+
+    30% {
+        transform: scale(1.6) rotate(-4deg);
+    }
+
+    40% {
+        transform: scale(1.6) rotate(4deg);
+    }
+
+    50% {
+        transform: scale(1.6) rotate(-3deg);
+    }
+
+    60% {
+        transform: scale(1.6) rotate(3deg);
+    }
+
+    70% {
+        transform: scale(1.6) rotate(-2deg);
+    }
+
+    80% {
+        transform: scale(1.6) rotate(2deg);
+    }
+
+    90% {
+        transform: scale(1.6) rotate(-1deg);
+    }
+}
+
+.gift-box.grow-2 .bow {
+    transform: translateX(-50%) translateY(-15px) rotate(-12deg) scale(1.1);
+}
+
+.gift-box.grow-2 .bow-left {
+    transform: rotate(-55deg) translateX(-8px);
+}
+
+.gift-box.grow-2 .bow-right {
+    transform: rotate(55deg) translateX(8px);
+}
+
+.gift-box.grow-2 .bow-tail-left {
+    transform: rotate(-30deg);
+}
+
+.gift-box.grow-2 .bow-tail-right {
+    transform: rotate(30deg);
+}
+
+.gift-box.grow-2 .ribbon-vertical {
+    opacity: 0.7;
+}
+
+.gift-box.grow-2 .ribbon-horizontal {
+    opacity: 0.8;
+}
+
+/* Click 3: Máximo crecimiento, temblor intenso, lazo casi suelto */
+.gift-box.grow-3 {
+    transform: scale(2);
+}
+
+.gift-box.shake-3 {
+    animation: shake3 1.5s ease-in-out;
+}
+
+@keyframes shake3 {
+    0% {
+        transform: scale(2) rotate(0deg) translateY(0);
+    }
+
+    5% {
+        transform: scale(2) rotate(-8deg) translateY(-5px);
+    }
+
+    10% {
+        transform: scale(2) rotate(8deg) translateY(5px);
+    }
+
+    15% {
+        transform: scale(2) rotate(-7deg) translateY(-8px);
+    }
+
+    20% {
+        transform: scale(2) rotate(7deg) translateY(8px);
+    }
+
+    25% {
+        transform: scale(2) rotate(-6deg) translateY(-10px);
+    }
+
+    30% {
+        transform: scale(2) rotate(6deg) translateY(10px);
+    }
+
+    35% {
+        transform: scale(2) rotate(-8deg) translateY(-12px);
+    }
+
+    40% {
+        transform: scale(2) rotate(8deg) translateY(12px);
+    }
+
+    45% {
+        transform: scale(2) rotate(-5deg) translateY(-8px);
+    }
+
+    50% {
+        transform: scale(2) rotate(5deg) translateY(8px);
+    }
+
+    55% {
+        transform: scale(2) rotate(-6deg) translateY(-10px);
+    }
+
+    60% {
+        transform: scale(2) rotate(6deg) translateY(10px);
+    }
+
+    65% {
+        transform: scale(2) rotate(-4deg) translateY(-6px);
+    }
+
+    70% {
+        transform: scale(2) rotate(4deg) translateY(6px);
+    }
+
+    75% {
+        transform: scale(2) rotate(-3deg) translateY(-4px);
+    }
+
+    80% {
+        transform: scale(2) rotate(3deg) translateY(4px);
+    }
+
+    85% {
+        transform: scale(2) rotate(-2deg) translateY(-2px);
+    }
+
+    90% {
+        transform: scale(2) rotate(2deg) translateY(2px);
+    }
+
+    95% {
+        transform: scale(2) rotate(-1deg) translateY(-1px);
+    }
+
+    100% {
+        transform: scale(2) rotate(0deg) translateY(0);
+    }
+}
+
+.gift-box.grow-3 .bow {
+    transform: translateX(-50%) translateY(-25px) rotate(20deg) scale(1.2);
+}
+
+.gift-box.grow-3 .bow-left {
+    transform: rotate(-70deg) translateX(-15px);
+}
+
+.gift-box.grow-3 .bow-right {
+    transform: rotate(70deg) translateX(15px);
+}
+
+.gift-box.grow-3 .bow-tail-left {
+    transform: rotate(-45deg) translateY(10px);
+}
+
+.gift-box.grow-3 .bow-tail-right {
+    transform: rotate(45deg) translateY(10px);
+}
+
+.gift-box.grow-3 .ribbon-vertical {
+    opacity: 0.5;
+    width: 15%;
+}
+
+.gift-box.grow-3 .ribbon-horizontal {
+    opacity: 0.5;
+}
+
+/* === ANIMACIÓN DE APERTURA DRAMÁTICA === */
+.gift-box.opening .gift-lid {
+    animation: lidFlyOff 1s ease-out forwards;
+}
+
+@keyframes lidFlyOff {
+    0% {
+        transform: translateY(0) rotateX(0deg);
+        opacity: 1;
+    }
+
+    30% {
+        transform: translateY(-60px) rotateX(-45deg);
+    }
+
+    60% {
+        transform: translateY(-120px) rotateX(-90deg) translateX(30px);
+    }
+
+    100% {
+        transform: translateY(-200px) rotateX(-120deg) translateX(80px) scale(0.5);
+        opacity: 0;
+    }
+}
+
+.gift-box.opening .bow {
+    animation: bowFlyOff 0.8s ease-out forwards;
+}
+
+@keyframes bowFlyOff {
+    0% {
+        transform: translateX(-50%) translateY(-25px) rotate(20deg);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateX(-30%) translateY(-150px) rotate(180deg) scale(1.3);
+    }
+
+    100% {
+        transform: translateX(50%) translateY(-250px) rotate(360deg) scale(0.3);
+        opacity: 0;
+    }
+}
+
+.gift-box.opening .ribbon-vertical,
+.gift-box.opening .ribbon-horizontal {
+    animation: ribbonFade 0.6s ease-out forwards;
+}
+
+@keyframes ribbonFade {
+    0% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}
+
+/* Brillo interior cuando se abre */
+.gift-box.opening .gift-body::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center,
+            rgba(255, 215, 0, 0.8) 0%,
+            rgba(255, 200, 100, 0.5) 40%,
+            transparent 70%);
+    animation: glowBurst 1s ease-out forwards;
+    border-radius: 5px;
+}
+
+@keyframes glowBurst {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(2);
+    }
+}
+
+
+/* === BODY === */
+html {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100vw;
+    overflow: hidden;
+    touch-action: manipulation;
+    background: var(--grass);
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* === FONDO DE CAMPO FLORIDO === */
+.field-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+}
+
+/* === CIELO COLORIDO ESTILO ANIME === */
+.sky {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background: linear-gradient(180deg,
+            var(--sky-top) 0%,
+            var(--sky-violet) 25%,
+            var(--sky-pink) 50%,
+            var(--sky-peach) 75%,
+            var(--sky-warm) 100%);
+    z-index: 1;
+}
+
+/* === SOL BRILLANTE Y VISIBLE (Centrado entre árbol y carta) === */
+.anime-sun {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+}
+
+.sun-core {
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle,
+            #ffffff 0%,
+            #fffef5 20%,
+            #fff8e0 50%,
+            rgba(255, 230, 160, 0.95) 100%);
+    border-radius: 50%;
+    box-shadow:
+        0 0 50px rgba(255, 250, 230, 1),
+        0 0 100px rgba(255, 230, 150, 0.9),
+        0 0 180px rgba(255, 200, 130, 0.8),
+        0 0 280px rgba(255, 180, 100, 0.6),
+        0 0 400px rgba(255, 160, 80, 0.4);
+    animation: sunPulse 4s ease-in-out infinite;
+}
+
+
+.sun-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle,
+            rgba(255, 230, 180, 0.4) 0%,
+            rgba(255, 200, 150, 0.2) 50%,
+            transparent 70%);
+    border-radius: 50%;
+    animation: glowPulse 3s ease-in-out infinite;
+}
+
+.sun-rays {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 160px;
+    height: 160px;
+    background:
+        conic-gradient(from 0deg,
+            transparent 0deg,
+            rgba(255, 230, 180, 0.3) 10deg,
+            transparent 20deg,
+            transparent 30deg,
+            rgba(255, 230, 180, 0.2) 40deg,
+            transparent 50deg,
+            transparent 60deg,
+            rgba(255, 230, 180, 0.3) 70deg,
+            transparent 80deg,
+            transparent 90deg,
+            rgba(255, 230, 180, 0.2) 100deg,
+            transparent 110deg,
+            transparent 120deg,
+            rgba(255, 230, 180, 0.3) 130deg,
+            transparent 140deg,
+            transparent 150deg,
+            rgba(255, 230, 180, 0.2) 160deg,
+            transparent 170deg,
+            transparent 180deg,
+            rgba(255, 230, 180, 0.3) 190deg,
+            transparent 200deg,
+            transparent 210deg,
+            rgba(255, 230, 180, 0.2) 220deg,
+            transparent 230deg,
+            transparent 240deg,
+            rgba(255, 230, 180, 0.3) 250deg,
+            transparent 260deg,
+            transparent 270deg,
+            rgba(255, 230, 180, 0.2) 280deg,
+            transparent 290deg,
+            transparent 300deg,
+            rgba(255, 230, 180, 0.3) 310deg,
+            transparent 320deg,
+            transparent 330deg,
+            rgba(255, 230, 180, 0.2) 340deg,
+            transparent 350deg,
+            transparent 360deg);
+    border-radius: 50%;
+    animation: sunRaysRotate 60s linear infinite;
+}
+
+@keyframes sunPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.05);
+        opacity: 0.95;
+    }
+}
+
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+@keyframes sunRaysRotate {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* === NUBES ESTILO ANIME (definidas y detalladas) === */
+.clouds-layer {
+    position: absolute;
+    width: 200%;
+    height: 100%;
+    background-repeat: repeat-x;
+    background-size: 50% 100%;
+}
+
+/* Capa trasera: Nubes grandes y suaves en el horizonte */
+.clouds-back {
+    top: 5%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 350'%3E%3Cdefs%3E%3ClinearGradient id='cloudGrad1' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffffff'/%3E%3Cstop offset='100%25' stop-color='%23f5e6e0'/%3E%3C/linearGradient%3E%3C/defs%3E%3C!-- Nube 1 grande --%3E%3Cg%3E%3Cellipse cx='150' cy='180' rx='90' ry='60' fill='url(%23cloudGrad1)'/%3E%3Cellipse cx='200' cy='150' rx='70' ry='50' fill='%23ffffff'/%3E%3Cellipse cx='120' cy='160' rx='60' ry='45' fill='%23fff8f5'/%3E%3Cellipse cx='180' cy='190' rx='80' ry='55' fill='%23fdf5f0'/%3E%3Cellipse cx='230' cy='175' rx='55' ry='40' fill='%23ffffff'/%3E%3Cellipse cx='100' cy='185' rx='50' ry='35' fill='%23fff5f0'/%3E%3C/g%3E%3C!-- Nube 2 --%3E%3Cg%3E%3Cellipse cx='450' cy='140' rx='100' ry='70' fill='%23fff0eb'/%3E%3Cellipse cx='510' cy='110' rx='80' ry='55' fill='%23ffffff'/%3E%3Cellipse cx='400' cy='120' rx='70' ry='50' fill='%23fffaf8'/%3E%3Cellipse cx='480' cy='150' rx='90' ry='60' fill='%23fef8f5'/%3E%3Cellipse cx='550' cy='130' rx='60' ry='45' fill='%23ffffff'/%3E%3Cellipse cx='380' cy='145' rx='55' ry='40' fill='%23fff5f0'/%3E%3C/g%3E%3C!-- Nube 3 rosada --%3E%3Cg%3E%3Cellipse cx='750' cy='170' rx='110' ry='75' fill='%23fce4ec'/%3E%3Cellipse cx='820' cy='140' rx='85' ry='60' fill='%23fff0f5'/%3E%3Cellipse cx='700' cy='150' rx='75' ry='55' fill='%23fef0f5'/%3E%3Cellipse cx='780' cy='180' rx='95' ry='65' fill='%23fbe8ef'/%3E%3Cellipse cx='860' cy='165' rx='65' ry='48' fill='%23fff5f8'/%3E%3Cellipse cx='680' cy='175' rx='60' ry='42' fill='%23fce8f0'/%3E%3C/g%3E%3C!-- Nube 4 --%3E%3Cg%3E%3Cellipse cx='1050' cy='150' rx='95' ry='65' fill='%23fff8f0'/%3E%3Cellipse cx='1100' cy='120' rx='75' ry='55' fill='%23ffffff'/%3E%3Cellipse cx='1000' cy='130' rx='65' ry='48' fill='%23fffaf5'/%3E%3Cellipse cx='1070' cy='160' rx='85' ry='58' fill='%23fef5f0'/%3E%3Cellipse cx='1130' cy='145' rx='55' ry='40' fill='%23ffffff'/%3E%3C/g%3E%3C/svg%3E");
+    animation: cloudsFloat 80s linear infinite;
+    opacity: 0.95;
+}
+
+/* Capa media: Nubes definidas con bordes claros */
+.clouds-mid {
+    top: 15%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1100 300'%3E%3Cdefs%3E%3ClinearGradient id='cloudGrad2' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffffff'/%3E%3Cstop offset='50%25' stop-color='%23fff5f0'/%3E%3Cstop offset='100%25' stop-color='%23f8e0d8'/%3E%3C/linearGradient%3E%3C/defs%3E%3C!-- Nube anime 1 --%3E%3Cg%3E%3Cellipse cx='120' cy='150' rx='75' ry='50' fill='url(%23cloudGrad2)'/%3E%3Cellipse cx='170' cy='125' rx='60' ry='42' fill='%23ffffff'/%3E%3Cellipse cx='85' cy='135' rx='50' ry='38' fill='%23fffbf8'/%3E%3Cellipse cx='145' cy='160' rx='65' ry='45' fill='%23fef8f5'/%3E%3Cellipse cx='200' cy='145' rx='45' ry='32' fill='%23ffffff'/%3E%3Cellipse cx='60' cy='155' rx='40' ry='30' fill='%23fff8f5'/%3E%3Cellipse cx='100' cy='120' rx='35' ry='28' fill='%23ffffff'/%3E%3C/g%3E%3C!-- Nube anime 2 rosada --%3E%3Cg%3E%3Cellipse cx='400' cy='130' rx='85' ry='58' fill='%23fce8f0'/%3E%3Cellipse cx='460' cy='100' rx='70' ry='48' fill='%23fff0f5'/%3E%3Cellipse cx='350' cy='115' rx='60' ry='42' fill='%23fef0f3'/%3E%3Cellipse cx='420' cy='145' rx='75' ry='52' fill='%23fbe5ec'/%3E%3Cellipse cx='500' cy='125' rx='55' ry='38' fill='%23fff5f8'/%3E%3Cellipse cx='320' cy='135' rx='48' ry='35' fill='%23fce8f0'/%3E%3Cellipse cx='380' cy='95' rx='40' ry='30' fill='%23fff8fa'/%3E%3C/g%3E%3C!-- Nube anime 3 blanca grande --%3E%3Cg%3E%3Cellipse cx='700' cy='145' rx='95' ry='65' fill='%23ffffff'/%3E%3Cellipse cx='770' cy='115' rx='78' ry='55' fill='%23fffcfa'/%3E%3Cellipse cx='645' cy='125' rx='68' ry='48' fill='%23ffffff'/%3E%3Cellipse cx='720' cy='160' rx='85' ry='58' fill='%23fef8f5'/%3E%3Cellipse cx='820' cy='140' rx='62' ry='45' fill='%23ffffff'/%3E%3Cellipse cx='610' cy='150' rx='55' ry='40' fill='%23fffaf8'/%3E%3Cellipse cx='680' cy='105' rx='48' ry='35' fill='%23ffffff'/%3E%3Cellipse cx='760' cy='170' rx='50' ry='38' fill='%23fff5f0'/%3E%3C/g%3E%3C!-- Nube anime 4 --%3E%3Cg%3E%3Cellipse cx='980' cy='135' rx='80' ry='55' fill='%23fff8f0'/%3E%3Cellipse cx='1040' cy='110' rx='65' ry='45' fill='%23ffffff'/%3E%3Cellipse cx='935' cy='120' rx='55' ry='40' fill='%23fffaf5'/%3E%3Cellipse cx='1000' cy='150' rx='70' ry='50' fill='%23fef5f0'/%3E%3Cellipse cx='1070' cy='130' rx='50' ry='35' fill='%23ffffff'/%3E%3C/g%3E%3C/svg%3E");
+    animation: cloudsFloat 55s linear infinite reverse;
+    opacity: 0.92;
+}
+
+/* Capa frontal: Nubes cercanas muy definidas con detalles */
+.clouds-front {
+    top: 25%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 250'%3E%3Cdefs%3E%3ClinearGradient id='cloudGrad3' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffffff'/%3E%3Cstop offset='40%25' stop-color='%23fffaf5'/%3E%3Cstop offset='100%25' stop-color='%23f5d8d0'/%3E%3C/linearGradient%3E%3ClinearGradient id='pinkGrad' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fff5f8'/%3E%3Cstop offset='100%25' stop-color='%23f8d5e0'/%3E%3C/linearGradient%3E%3C/defs%3E%3C!-- Nube detallada 1 --%3E%3Cg%3E%3Cellipse cx='130' cy='120' rx='70' ry='48' fill='url(%23cloudGrad3)'/%3E%3Cellipse cx='175' cy='95' rx='55' ry='40' fill='%23ffffff'/%3E%3Cellipse cx='95' cy='105' rx='48' ry='35' fill='%23fffcfa'/%3E%3Cellipse cx='150' cy='135' rx='62' ry='42' fill='%23fef5f0'/%3E%3Cellipse cx='205' cy='115' rx='42' ry='30' fill='%23ffffff'/%3E%3Cellipse cx='70' cy='125' rx='38' ry='28' fill='%23fff8f5'/%3E%3Cellipse cx='115' cy='85' rx='32' ry='25' fill='%23ffffff'/%3E%3Cellipse cx='185' cy='130' rx='35' ry='26' fill='%23fffaf8'/%3E%3C/g%3E%3C!-- Nube detallada 2 rosada-durazno --%3E%3Cg%3E%3Cellipse cx='420' cy='110' rx='80' ry='55' fill='url(%23pinkGrad)'/%3E%3Cellipse cx='480' cy='85' rx='65' ry='45' fill='%23fff8fa'/%3E%3Cellipse cx='370' cy='95' rx='55' ry='40' fill='%23fef5f8'/%3E%3Cellipse cx='440' cy='125' rx='70' ry='48' fill='%23fbe8ef'/%3E%3Cellipse cx='520' cy='105' rx='50' ry='35' fill='%23fff5f8'/%3E%3Cellipse cx='340' cy='115' rx='45' ry='32' fill='%23fce8f0'/%3E%3Cellipse cx='400' cy='75' rx='38' ry='28' fill='%23fffafa'/%3E%3Cellipse cx='490' cy='120' rx='40' ry='30' fill='%23fef0f5'/%3E%3C/g%3E%3C!-- Nube detallada 3 blanca brillante --%3E%3Cg%3E%3Cellipse cx='750' cy='115' rx='90' ry='62' fill='%23ffffff'/%3E%3Cellipse cx='820' cy='90' rx='72' ry='50' fill='%23fffffe'/%3E%3Cellipse cx='695' cy='100' rx='62' ry='45' fill='%23ffffff'/%3E%3Cellipse cx='770' cy='135' rx='78' ry='55' fill='%23fefaf8'/%3E%3Cellipse cx='870' cy='110' rx='58' ry='42' fill='%23ffffff'/%3E%3Cellipse cx='660' cy='120' rx='52' ry='38' fill='%23fffcfa'/%3E%3Cellipse cx='720' cy='80' rx='45' ry='33' fill='%23ffffff'/%3E%3Cellipse cx='800' cy='140' rx='48' ry='35' fill='%23fff8f5'/%3E%3Cellipse cx='850' cy='85' rx='40' ry='30' fill='%23ffffff'/%3E%3C/g%3E%3C/svg%3E");
+    animation: cloudsFloat 40s linear infinite;
+    opacity: 0.95;
+}
+
+/* === COLINAS SUAVES KAWAII (4 capas con perspectiva atmosférica) === */
+.mountains-container {
+    position: absolute;
+    bottom: -5%;
+    left: -5%;
+    width: 110%;
+    height: 70%;
+    z-index: 2;
+    pointer-events: none;
+    transform: scale(1.1);
+    transform-origin: bottom center;
+}
+
+/* Base para todas las capas de colinas SVG */
+.hill-svg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+/* Capa 1: Colina Lejana — más alta, gris-pizarra, suave blur atmosférico */
+.hill-back {
+    height: 70%;
+    z-index: 1;
+    filter: blur(2px);
+}
+
+/* Capa 2: Colina Media-Lejana */
+.hill-mid-back {
+    height: 58%;
+    z-index: 2;
+    filter: blur(0.5px);
+}
+
+/* Capa 3: Colina Media (plano de los personajes) */
+.hill-mid {
+    height: 48%;
+    z-index: 3;
+}
+
+/* Capa 4: Colina Frontal (primer plano inferior) */
+.hill-front {
+    height: 38%;
+    z-index: 4;
+    filter: drop-shadow(0 -2px 8px rgba(0, 0, 0, 0.15));
+}
+
+/* God Rays / Bloom Effect - Radiando desde el sol centrado hacia abajo */
+.god-rays {
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 80%;
+    height: 100%;
+    background: linear-gradient(180deg,
+            rgba(255, 250, 230, 0.4) 0%,
+            rgba(255, 230, 180, 0.2) 20%,
+            rgba(255, 200, 150, 0.08) 45%,
+            transparent 65%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    z-index: 9;
+    animation: godRaysPulse 8s ease-in-out infinite;
+}
+
+@keyframes godRaysPulse {
+
+    0%,
+    100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+/* === VIGNETTE OVERLAY (sombra en esquinas para look ilustración) === */
+.vignette-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+    background: radial-gradient(ellipse 70% 60% at 50% 50%,
+            transparent 50%,
+            rgba(20, 30, 20, 0.25) 85%,
+            rgba(10, 15, 10, 0.45) 100%);
+}
+
+/* === FILM GRAIN / NOISE OVERLAY === */
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 51;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+}
+
+
+/* === PAREJA ANIME EN EL CENTRO === */
+.couple-silhouette {
+    position: absolute;
+    bottom: 28%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: flex;
+    align-items: flex-end;
+    gap: 0px;
+    animation: coupleWalk 4s ease-in-out infinite;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+}
+
+/* Sombra de contacto (pies en el suelo) */
+.couple-contact-shadow {
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 8px;
+    background: radial-gradient(ellipse, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.15) 50%, transparent 80%);
+    filter: blur(4px);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.person {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Él - 1.90m (más alto) - ESCALA PEQUEÑA para paisaje */
+.person-him {
+    height: 55px;
+    width: 22px;
+}
+
+.him-head {
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(145deg, #f5e1d0 0%, #e8d0c0 100%);
+    border-radius: 50%;
+    position: relative;
+    z-index: 2;
+}
+
+/* Pelo abundante mod cut despeinado */
+.him-hair {
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 10px;
+    background: linear-gradient(180deg, #3d2a1f 0%, #5c4636 50%, #4a3728 100%);
+    border-radius: 60% 60% 40% 40%;
+    z-index: 3;
+}
+
+/* Textura despeinada */
+.him-hair::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 2px;
+    width: 12px;
+    height: 6px;
+    background: linear-gradient(90deg, #4a3728, #5c4636, #3d2a1f);
+    border-radius: 50%;
+}
+
+/* Cuerpo - TRAJE BLANCO ELEGANTE */
+.him-body {
+    width: 18px;
+    height: 24px;
+    background: linear-gradient(180deg, #faf8f5 0%, #f0ebe5 50%, #e8e2da 100%);
+    border-radius: 5px 5px 3px 3px;
+    margin-top: -2px;
+    box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* Solapa del traje */
+.him-body::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 4px;
+    background: #f5f0ea;
+    border-radius: 2px;
+}
+
+/* Brazos del traje blanco */
+.him-arm-inner {
+    position: absolute;
+    bottom: 18px;
+    right: -3px;
+    width: 5px;
+    height: 14px;
+    background: linear-gradient(180deg, #f0ebe5, #e8e2da);
+    border-radius: 3px;
+    transform: rotate(20deg);
+    transform-origin: top;
+}
+
+/* Pantalón blanco */
+.him-legs {
+    width: 16px;
+    height: 20px;
+    background: linear-gradient(180deg, #f5f0ea 0%, #ebe5de 100%);
+    border-radius: 0 0 4px 4px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.him-legs::before,
+.him-legs::after {
+    content: '';
+    width: 6px;
+    height: 100%;
+    background: inherit;
+    border-radius: 0 0 3px 3px;
+}
+
+/* Ella - 1.55m (más bajita) */
+.person-her {
+    height: 50px;
+    width: 24px;
+}
+
+.her-head {
+    width: 10px;
+    height: 10px;
+    background: linear-gradient(145deg, #faf5f0 0%, #f0e8e0 100%);
+    border-radius: 50%;
+    position: relative;
+    z-index: 2;
+}
+
+/* Pelo largo castaño cobrizo con corona de flores */
+.her-hair {
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 28px;
+    background: linear-gradient(180deg, #8b5a3c 0%, #a0654a 20%, #8b5a3c 50%, #7a4a30 80%, #6b3d28 100%);
+    border-radius: 50% 50% 30% 30%;
+    z-index: 1;
+}
+
+/* Corona de flores en el pelo */
+.her-hair::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 6px;
+    background: linear-gradient(90deg, #e8c4b8, #f0d0c0, #e8c4b8);
+    border-radius: 50%;
+    z-index: 2;
+}
+
+/* VESTIDO BLANCO ELEGANTE LARGO */
+.her-body {
+    width: 18px;
+    height: 22px;
+    background: linear-gradient(180deg, #fdfcfa 0%, #f8f5f0 40%, #f0ebe5 100%);
+    border-radius: 4px 4px 0 0;
+    margin-top: -2px;
+    box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.08);
+    position: relative;
+}
+
+/* Escote elegante */
+.her-body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 4px;
+    background: linear-gradient(145deg, #faf5f0, #f0e8e0);
+    border-radius: 0 0 4px 4px;
+}
+
+/* Falda larga del vestido blanco - fluida */
+.her-body::after {
+    content: '';
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 20px;
+    background: linear-gradient(180deg, #f0ebe5 0%, #fdfcfa 30%, #f8f5f0 70%, #f0ebe5 100%);
+    border-radius: 0 0 60% 60%;
+    z-index: -1;
+}
+
+/* Brazos delicados */
+.her-arm-inner {
+    position: absolute;
+    bottom: 16px;
+    left: -3px;
+    width: 4px;
+    height: 12px;
+    background: linear-gradient(180deg, #faf5f0, #f0e8e0);
+    border-radius: 2px;
+    transform: rotate(-20deg);
+    transform-origin: top;
+}
+
+/* Sin piernas visibles - vestido largo */
+.her-legs {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+/* Manos unidas al centro */
+.holding-hands {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 6px;
+    background: linear-gradient(90deg, #f5e1d0, #faf5f0);
+    border-radius: 40%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Animación sutil de caminar */
+@keyframes coupleWalk {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(-2px);
+    }
+}
+
+/* === BOSQUE === */
+.forest {
+    position: absolute;
+    bottom: 25%;
+    left: 0;
+    width: 100%;
+    height: 20%;
+    z-index: 3;
+}
+
+.trees {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+}
+
+.trees-back {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 200'%3E%3Cpath fill='%232d4a3e' d='M0,200L0,80C40,60,80,100,120,80C160,60,200,40,240,60C280,80,320,120,360,100C400,80,440,40,480,50C520,60,560,100,600,90C640,80,680,40,720,35C760,30,800,60,840,80C880,100,920,110,960,100C1000,90,1040,60,1080,50C1120,40,1160,50,1200,70C1240,90,1280,120,1320,110C1360,100,1400,50,1420,25L1440,0L1440,200Z'/%3E%3C/svg%3E");
+    background-size: cover;
+    opacity: 0.9;
+}
+
+.trees-front {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 150'%3E%3Cpath fill='%233d5a4e' d='M0,150L0,60C60,80,120,40,180,50C240,60,300,100,360,90C420,80,480,30,540,25C600,20,660,60,720,70C780,80,840,60,900,50C960,40,1020,50,1080,65C1140,80,1200,100,1260,95C1320,90,1380,60,1410,45L1440,30L1440,150Z'/%3E%3C/svg%3E");
+    background-size: cover;
+}
+
+/* === FLORES DISTANTES (cerca de montañas para profundidad) === */
+.distant-flowers {
+    position: absolute;
+    bottom: 28%;
+    left: 0;
+    width: 100%;
+    height: 15%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.flower-dots {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-repeat: repeat-x;
+}
+
+.flower-dots-far {
+    bottom: 60%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 50'%3E%3Ccircle cx='20' cy='40' r='2' fill='rgba(224,122,95,0.3)'/%3E%3Ccircle cx='50' cy='35' r='1.5' fill='rgba(245,160,181,0.3)'/%3E%3Ccircle cx='80' cy='42' r='2' fill='rgba(212,80,112,0.25)'/%3E%3Ccircle cx='110' cy='38' r='1.5' fill='rgba(255,248,240,0.3)'/%3E%3Ccircle cx='140' cy='40' r='2' fill='rgba(232,126,135,0.3)'/%3E%3Ccircle cx='170' cy='36' r='1.5' fill='rgba(224,122,95,0.25)'/%3E%3Ccircle cx='200' cy='42' r='2' fill='rgba(245,160,181,0.3)'/%3E%3Ccircle cx='230' cy='37' r='1.5' fill='rgba(200,76,9,0.25)'/%3E%3Ccircle cx='260' cy='41' r='2' fill='rgba(255,248,240,0.3)'/%3E%3Ccircle cx='290' cy='38' r='1.5' fill='rgba(212,80,112,0.3)'/%3E%3Ccircle cx='320' cy='40' r='2' fill='rgba(224,122,95,0.25)'/%3E%3Ccircle cx='350' cy='36' r='1.5' fill='rgba(245,160,181,0.3)'/%3E%3Ccircle cx='380' cy='42' r='2' fill='rgba(232,126,135,0.25)'/%3E%3C/svg%3E");
+    background-size: 400px 50px;
+    opacity: 0.5;
+}
+
+.flower-dots-mid {
+    bottom: 30%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 350 60'%3E%3Ccircle cx='25' cy='45' r='3' fill='rgba(224,122,95,0.4)'/%3E%3Ccircle cx='60' cy='40' r='2.5' fill='rgba(245,160,181,0.4)'/%3E%3Ccircle cx='95' cy='48' r='3' fill='rgba(212,80,112,0.35)'/%3E%3Ccircle cx='130' cy='42' r='2.5' fill='rgba(255,248,240,0.4)'/%3E%3Ccircle cx='165' cy='46' r='3' fill='rgba(232,126,135,0.4)'/%3E%3Ccircle cx='200' cy='41' r='2.5' fill='rgba(200,76,9,0.35)'/%3E%3Ccircle cx='235' cy='48' r='3' fill='rgba(224,122,95,0.4)'/%3E%3Ccircle cx='270' cy='43' r='2.5' fill='rgba(245,160,181,0.35)'/%3E%3Ccircle cx='305' cy='46' r='3' fill='rgba(255,248,240,0.4)'/%3E%3Ccircle cx='340' cy='40' r='2.5' fill='rgba(212,80,112,0.4)'/%3E%3C/svg%3E");
+    background-size: 350px 60px;
+    opacity: 0.6;
+}
+
+/* === CAMPO DE FLORES ORGÁNICAS (Anime Style) === */
+.flower-field {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30%;
+    z-index: 4;
+    overflow: hidden;
+}
+
+/* Capa de suelo con gradiente de profundidad (claro=horizonte, oscuro=cerca) */
+.grass-layer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        /* Vignette suave en bordes */
+        radial-gradient(ellipse 100% 100% at 50% 80%,
+            transparent 30%,
+            rgba(25, 45, 25, 0.25) 70%,
+            rgba(15, 35, 18, 0.4) 100%),
+        /* Camino central con luz dorada sutil */
+        radial-gradient(ellipse 25% 80% at 50% 100%,
+            rgba(200, 195, 150, 0.2) 0%,
+            rgba(160, 180, 120, 0.1) 50%,
+            transparent 80%),
+        /* Gradiente vertical de profundidad: prado claro arriba → verde oscuro abajo */
+        linear-gradient(180deg,
+            #6a9a58 0%,
+            #5a8a4a 20%,
+            #4a7a3e 40%,
+            #3f6f35 60%,
+            #356830 80%,
+            #2d5a28 100%);
+}
+
+/* Ruido estático de textura sobre el suelo */
+.grass-layer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.12;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+}
+
+/* Contenedor de flores generadas por JS */
+.flowers-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Flor individual generada por JS */
+.organic-flower {
+    position: absolute;
+    transform-origin: bottom center;
+}
+
+/* Brizna de pasto */
+.grass-blade {
+    transform-origin: bottom center;
+}
+
+/* Animación de balanceo suave por viento */
+@keyframes flowerSway {
+
+    0%,
+    100% {
+        transform: rotate(0deg) translateY(0);
+    }
+
+    25% {
+        transform: rotate(2deg) translateY(-1px);
+    }
+
+    50% {
+        transform: rotate(0deg) translateY(0);
+    }
+
+    75% {
+        transform: rotate(-2deg) translateY(-1px);
+    }
+}
+
+/* Variante de balanceo más pronunciado para flores cercanas */
+@keyframes flowerSwayStrong {
+
+    0%,
+    100% {
+        transform: rotate(0deg) translateY(0);
+    }
+
+    25% {
+        transform: rotate(4deg) translateY(-2px);
+    }
+
+    50% {
+        transform: rotate(-1deg) translateY(0);
+    }
+
+    75% {
+        transform: rotate(-3deg) translateY(-1px);
+    }
+}
+
+/* Balanceo de briznas de pasto (más amplio y natural) */
+@keyframes grassSway {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    20% {
+        transform: rotate(5deg);
+    }
+
+    50% {
+        transform: rotate(-2deg);
+    }
+
+    80% {
+        transform: rotate(4deg);
+    }
+}
+
+/* Capas de flores legacy (ocultas, reemplazadas por JS) */
+.flowers-layer {
+    display: none;
+}
+
+/* === FLORES SVG ORGÁNICAS (Tipos) === */
+
+/* Margarita con pétalos */
+.flower-daisy {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+}
+
+/* Tulipán elegante */
+.flower-tulip {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+/* Lavanda delicada */
+.flower-lavender {
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+}
+
+/* Rosa romántica */
+.flower-rose {
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+}
+
+/* Flor silvestre simple */
+.flower-wild {
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+}
+
+/* Flores lejanas: más borrosas y desaturadas */
+.flower-distant {
+    filter: blur(0.5px) saturate(0.7);
+    opacity: 0.6;
+}
+
+/* Flores cercanas: más nítidas y saturadas */
+.flower-close {
+    filter: saturate(1.1);
+    opacity: 1;
+}
+
+
+/* === MARIPOSAS ANIMADAS (7 mariposas variadas) === */
+.butterflies-container {
+    position: absolute;
+    top: 20%;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.butterfly {
+    position: absolute;
+    opacity: 0.85;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+}
+
+/* Mariposa 1: Grande, movimiento lento */
+.butterfly-1 {
+    left: 5%;
+    top: 15%;
+    font-size: 2rem;
+    animation: butterflyFly1 20s ease-in-out infinite;
+}
+
+/* Mariposa 2: Mediana, movimiento hacia arriba */
+.butterfly-2 {
+    left: 25%;
+    top: 50%;
+    font-size: 1.6rem;
+    animation: butterflyFly2 18s ease-in-out infinite;
+    animation-delay: 3s;
+}
+
+/* Mariposa 3: Pequeña, movimiento rápido */
+.butterfly-3 {
+    left: 45%;
+    top: 25%;
+    font-size: 1.2rem;
+    animation: butterflyFly3 12s ease-in-out infinite;
+    animation-delay: 1s;
+}
+
+/* Mariposa 4: Grande, cerca del sol */
+.butterfly-4 {
+    left: 60%;
+    top: 10%;
+    font-size: 1.8rem;
+    animation: butterflyFly4 22s ease-in-out infinite;
+    animation-delay: 7s;
+}
+
+/* Mariposa 5: Mediana, movimiento bajo */
+.butterfly-5 {
+    left: 75%;
+    top: 60%;
+    font-size: 1.5rem;
+    animation: butterflyFly5 16s ease-in-out infinite;
+    animation-delay: 5s;
+}
+
+/* Mariposa 6: Pequeña, zigzag */
+.butterfly-6 {
+    left: 85%;
+    top: 35%;
+    font-size: 1.1rem;
+    animation: butterflyFly6 14s ease-in-out infinite;
+    animation-delay: 9s;
+}
+
+/* Mariposa 7: Muy grande, primer plano */
+.butterfly-7 {
+    left: 15%;
+    top: 70%;
+    font-size: 2.4rem;
+    animation: butterflyFly7 25s ease-in-out infinite;
+    animation-delay: 2s;
+}
+
+/* Animaciones variadas para cada mariposa */
+@keyframes butterflyFly1 {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 0;
+    }
+
+    5% {
+        opacity: 0.85;
+    }
+
+    25% {
+        transform: translate(80px, -40px) rotate(15deg);
+    }
+
+    50% {
+        transform: translate(160px, 20px) rotate(-10deg);
+    }
+
+    75% {
+        transform: translate(240px, -30px) rotate(20deg);
+    }
+
+    95% {
+        opacity: 0.85;
+    }
+
+    100% {
+        transform: translate(320px, 0) rotate(0deg);
+        opacity: 0;
+    }
+}
+
+@keyframes butterflyFly2 {
+    0% {
+        transform: translate(0, 0) rotate(-5deg);
+        opacity: 0;
+    }
+
+    5% {
+        opacity: 0.85;
+    }
+
+    30% {
+        transform: translate(60px, -60px) rotate(10deg);
+    }
+
+    60% {
+        transform: translate(120px, -20px) rotate(-15deg);
+    }
+
+    90% {
+        opacity: 0.85;
+    }
+
+    100% {
+        transform: translate(180px, -80px) rotate(5deg);
+        opacity: 0;
+    }
+}
+
+@keyframes butterflyFly3 {
+    0% {
+        transform: translate(0, 0) rotate(10deg) scale(1);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.85;
+    }
+
+    25% {
+        transform: translate(40px, -20px) rotate(-5deg) scale(1.1);
+    }
+
+    50% {
+        transform: translate(80px, 15px) rotate(15deg) scale(0.9);
+    }
+
+    75% {
+        transform: translate(120px, -25px) rotate(-10deg) scale(1.05);
+    }
+
+    90% {
+        opacity: 0.85;
+    }
+
+    100% {
+        transform: translate(160px, 10px) rotate(0deg) scale(1);
+        opacity: 0;
+    }
+}
+
+@keyframes butterflyFly4 {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 0;
+    }
+
+    8% {
+        opacity: 0.85;
+    }
+
+    20% {
+        transform: translate(-30px, 50px) rotate(-20deg);
+    }
+
+    40% {
+        transform: translate(-60px, 30px) rotate(15deg);
+    }
+
+    60% {
+        transform: translate(-90px, 60px) rotate(-10deg);
+    }
+
+    80% {
+        transform: translate(-120px, 40px) rotate(25deg);
+    }
+
+    92% {
+        opacity: 0.85;
+    }
+
+    100% {
+        transform: translate(-150px, 70px) rotate(0deg);
+        opacity: 0;
+    }
+}
+
+@keyframes butterflyFly5 {
+    0% {
+        transform: translate(0, 0) rotate(5deg);
+        opacity: 0;
+    }
+
+    8% {
+        opacity: 0.85;
+    }
+
+    33% {
+        transform: translate(70px, -15px) rotate(-8deg);
+    }
+
+    66% {
+        transform: translate(140px, 10px) rotate(12deg);
+    }
+
+    92% {
+        opacity: 0.85;
+    }
+
+    100% {
+        transform: translate(210px, -5px) rotate(0deg);
+        opacity: 0;
+    }
+}
+
+@keyframes butterflyFly6 {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 0;
+    }
+
+    6% {
+        opacity: 0.85;
+    }
+
+    16% {
+        transform: translate(-20px, -30px) rotate(25deg);
+    }
+
+    33% {
+        transform: translate(-40px, 10px) rotate(-20deg);
+    }
+
+    50% {
+        transform: translate(-60px, -40px) rotate(30deg);
+    }
+
+    66% {
+        transform: translate(-80px, 5px) rotate(-15deg);
+    }
+
+    83% {
+        transform: translate(-100px, -35px) rotate(20deg);
+    }
+
+    94% {
+        opacity: 0.85;
+    }
+
+    100% {
+        transform: translate(-120px, 0) rotate(0deg);
+        opacity: 0;
+    }
+}
+
+@keyframes butterflyFly7 {
+    0% {
+        transform: translate(0, 0) rotate(-5deg) scale(1);
+        opacity: 0;
+    }
+
+    4% {
+        opacity: 0.9;
+    }
+
+    20% {
+        transform: translate(100px, -20px) rotate(10deg) scale(1.1);
+    }
+
+    40% {
+        transform: translate(200px, 30px) rotate(-8deg) scale(0.95);
+    }
+
+    60% {
+        transform: translate(300px, -10px) rotate(15deg) scale(1.05);
+    }
+
+    80% {
+        transform: translate(400px, 20px) rotate(-12deg) scale(1);
+    }
+
+    96% {
+        opacity: 0.9;
+    }
+
+    100% {
+        transform: translate(500px, 0) rotate(0deg) scale(1);
+        opacity: 0;
+    }
+}
+
+
+/* === ANIMACIONES DEL CAMPO === */
+@keyframes cloudsFloat {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes flowersWave {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-5px) scale(1.02);
+    }
+}
+
+@keyframes butterflyFly {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.8;
+    }
+
+    25% {
+        transform: translate(50px, -30px) rotate(10deg);
+    }
+
+    50% {
+        transform: translate(100px, 10px) rotate(-5deg);
+    }
+
+    75% {
+        transform: translate(150px, -20px) rotate(15deg);
+    }
+
+    90% {
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translate(200px, 0) rotate(0deg);
+        opacity: 0;
+    }
+}
+
+
+
+
+/* === ESTRELLAS ALEATORIAS (generadas por JS) === */
+.stars-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.star {
+    position: absolute;
+    background: none;
+    border-radius: 0;
+    animation: twinkleHeart 3s ease-in-out infinite;
+    line-height: 0;
+}
+
+/* Corazoncito SVG con brillo pulsante */
+.heart-star svg {
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+}
+
+@keyframes twinkleHeart {
+
+    0%,
+    100% {
+        opacity: 0.25;
+        filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4));
+        transform: scale(0.85);
+    }
+
+    50% {
+        opacity: 1;
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 1)) drop-shadow(0 0 8px rgba(255, 230, 240, 0.7));
+        transform: scale(1.1);
+    }
+}
+
+/* === GAVIOTAS (movimiento irregular por JS) === */
+.seagulls-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    z-index: 4;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.seagull {
+    position: absolute;
+    color: #0a0a15;
+    font-size: 1.2rem;
+    opacity: 0.85;
+}
+
+/* === DELFINES Y PECES (integrados con las olas) === */
+.sea-life-container {
+    position: absolute;
+    bottom: 40%;
+    left: 50%;
+    width: 50%;
+    height: 35%;
+    z-index: 6;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.dolphin,
+.fish {
+    position: absolute;
+    filter: brightness(0.3) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    opacity: 0;
+}
+
+.dolphin {
+    font-size: 2.5rem;
+    animation: dolphinJump 12s ease-in-out infinite;
+}
+
+.fish {
+    font-size: 1.4rem;
+    animation: fishSwim 10s ease-in-out infinite;
+}
+
+.dolphin:nth-child(1) {
+    left: 5%;
+    top: 20%;
+    animation-delay: 0s;
+}
+
+.dolphin:nth-child(2) {
+    left: 55%;
+    top: 35%;
+    animation-delay: 6s;
+}
+
+.fish:nth-child(3) {
+    left: 25%;
+    top: 50%;
+    animation-delay: 3s;
+}
+
+.fish:nth-child(4) {
+    left: 75%;
+    top: 45%;
+    animation-delay: 8s;
+}
+
+/* === DECORACIONES FLOTANTES === */
+.background-decorations {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 6;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.floating-item {
+    position: absolute;
+    bottom: -100px;
+    font-size: 2.5rem;
+    opacity: 0.9;
+    will-change: transform;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.anim-bouquet {
+    animation: gatherBouquet 12s linear infinite;
+}
+
+.anim-float {
+    animation: floatUp 14s linear infinite;
+}
+
+.anim-sparkle {
+    animation: sparkleFloat 10s ease-in-out infinite;
+}
+
+.anim-heart {
+    animation: heartFloat 11s ease-in-out infinite;
+}
+
+/* Esquinas */
+.corners-container {
+    pointer-events: none;
+    z-index: 10;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+.corner-decoration {
+    position: absolute;
+    font-size: 2.5rem;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+    animation: pulseSlow 3s infinite;
+}
+
+.top-left {
+    top: 15px;
+    left: 15px;
+}
+
+.top-right {
+    top: 15px;
+    right: 15px;
+}
+
+.bottom-left {
+    bottom: 15px;
+    left: 15px;
+}
+
+.bottom-right {
+    bottom: 15px;
+    right: 15px;
+}
+
+/* === GLASSMORPHISM === */
+.glass-card,
+.glass-card-intro {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.glass-card-intro {
+    background: rgba(107, 48, 116, 0.5);
+    border: 2px solid rgba(255, 179, 71, 0.4);
+}
+
+/* === PANTALLAS === */
+.hidden {
+    display: none !important;
+}
+
+.activa {
+    display: flex !important;
+}
+
+.invisible {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 2s ease;
+}
+
+.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.pantalla {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* === TIPOGRAFÍA === */
+.titulo-animado {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.8rem;
+    color: var(--ivory);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 30px var(--sun-glow);
+    margin-bottom: 15px;
+    animation: titleGlow 2s ease-in-out infinite;
+}
+
+.subtitulo {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 240, 0.9);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    margin-bottom: 25px;
+}
+
+.btn-inicio {
+    background: linear-gradient(135deg, var(--sky-pink), var(--sky-orange));
+    color: var(--ivory);
+    border: none;
+    padding: 18px 45px;
+    font-size: 1.3rem;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(201, 76, 126, 0.4);
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-inicio:hover {
+    transform: translateY(-3px) scale(1.02);
+}
+
+/* === QUIZ === */
+.quiz-card {
+    background: rgba(44, 22, 84, 0.8);
+    border: 2px solid rgba(255, 179, 71, 0.4);
+}
+
+.quiz-card::before {
+    content: '❤️';
+    position: absolute;
+    top: -20px;
+    right: -10px;
+    font-size: 2.5rem;
+    animation: bounce 1s infinite;
+}
+
+.quiz-card::after {
+    content: '🌷';
+    position: absolute;
+    top: -15px;
+    left: -10px;
+    font-size: 2rem;
+    animation: sway 2s ease-in-out infinite;
+}
+
+.pregunta {
+    font-family: 'Pacifico', cursive;
+    font-size: 1.5rem;
+    color: var(--ivory);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.imagen-container {
+    width: 100%;
+    height: 200px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 15px 0;
+    border: 4px solid var(--sun-glow);
+    box-shadow: 0 0 20px rgba(255, 179, 71, 0.4);
+    background: linear-gradient(135deg, var(--sky-mid), var(--sky-pink));
+}
+
+.imagen-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.btn-opcion {
+    width: 100%;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    border: 2px solid transparent;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 249, 230, 0.9));
+    border-radius: 20px;
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-opcion:hover {
+    transform: translateX(10px) scale(1.02);
+    border-color: var(--sun-glow);
+    box-shadow: 0 5px 20px rgba(255, 179, 71, 0.4);
+}
+
+.correct {
+    background: linear-gradient(135deg, #a8e6cf, #88d8b0) !important;
+    color: #155724;
+    border-color: #28a745 !important;
+}
+
+.wrong {
+    background: linear-gradient(135deg, #ffb3ba, #ff8a8a) !important;
+    color: #721c24;
+    animation: shake 0.5s;
+}
+
+.barra-tiempo-container {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.barra-progreso {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, var(--sky-pink), var(--sun-glow), var(--sky-gold));
+    border-radius: 10px;
+}
+
+/* === PANTALLA FINAL === */
+#pantalla-final {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 5%;
+    min-height: 100vh;
+}
+
+/* Árbol a la izquierda */
+#canvas-tree {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 50% !important;
+    height: 100% !important;
+    z-index: 7;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+/* Contenido final CENTRADO */
+.final-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+    max-width: 400px;
+    background: linear-gradient(145deg,
+            rgba(255, 250, 240, 0.95) 0%,
+            rgba(255, 240, 225, 0.92) 50%,
+            rgba(250, 230, 215, 0.95) 100%);
+    backdrop-filter: blur(15px);
+    padding: 30px;
+    border-radius: 30px;
+    border: 3px solid rgba(224, 122, 95, 0.5);
+    margin-bottom: 80px;
+    animation: fadeInUp 1s ease;
+    box-shadow:
+        0 8px 32px rgba(200, 150, 120, 0.3),
+        0 0 20px rgba(255, 200, 180, 0.2),
+        inset 0 0 20px rgba(255, 255, 255, 0.3);
+    z-index: 20;
+    text-align: center;
+}
+
+/* Marco de foto en forma de corazón */
+.slideshow-container {
+    width: 180px;
+    height: 180px;
+    position: relative;
+    margin-bottom: 25px;
+    overflow: visible;
+}
+
+.heart-frame {
+    width: 180px;
+    height: 160px;
+    position: relative;
+    transform: rotate(0deg);
+    overflow: hidden;
+}
+
+.heart-frame::before,
+.heart-frame::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 90px;
+    height: 140px;
+    background: var(--ivory);
+    border-radius: 90px 90px 0 0;
+}
+
+.heart-frame::before {
+    left: 90px;
+    transform: rotate(-45deg);
+    transform-origin: 0 100%;
+}
+
+.heart-frame::after {
+    left: 0;
+    transform: rotate(45deg);
+    transform-origin: 100% 100%;
+}
+
+.slide-foto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    border-radius: 50%;
+    border: 5px solid var(--ivory);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.slide-foto.active {
+    opacity: 1;
+}
+
+.titulo-final {
+    font-family: 'Pacifico', cursive;
+    font-size: 2rem;
+    color: var(--ivory);
+    text-shadow: 0 0 20px var(--sun-glow), 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 25px;
+    animation: titleGlow 2s infinite;
+    text-align: center;
+}
+
+/* === BOTÓN CORAZÓN LIMPIO (sin cuadrado) === */
+.btn-corazon {
+    position: relative;
+    width: 180px;
+    height: 160px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    animation: heartbeat 1.2s infinite;
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.btn-corazon .heart-shape {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.btn-corazon .heart-shape::before,
+.btn-corazon .heart-shape::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 90px;
+    height: 135px;
+    background: var(--passion-red);
+    border-radius: 90px 90px 0 0;
+    box-shadow: 0 0 30px rgba(220, 20, 60, 0.6);
+}
+
+.btn-corazon .heart-shape::before {
+    left: 90px;
+    transform: rotate(-45deg);
+    transform-origin: 0 100%;
+}
+
+.btn-corazon .heart-shape::after {
+    left: 0;
+    transform: rotate(45deg);
+    transform-origin: 100% 100%;
+}
+
+.btn-corazon span {
+    position: relative;
+    z-index: 10;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.3;
+    padding: 0 20px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.btn-corazon:hover {
+    transform: scale(1.1);
+}
+
+.btn-corazon:hover .heart-shape::before,
+.btn-corazon:hover .heart-shape::after {
+    background: #ff1744;
+    box-shadow: 0 0 50px rgba(255, 23, 68, 0.8);
+}
+
+/* === BTS === */
+.bts-audience {
+    position: fixed;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    pointer-events: none;
+    z-index: 15;
+}
+
+.tiny-member {
+    height: 150px;
+    margin: 0 -12px;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
+}
+
+.member-center {
+    height: 200px;
+    z-index: 50;
+    filter: drop-shadow(0 0 25px rgba(255, 179, 71, 0.6));
+    animation: bounce 2s infinite;
+}
+
+.member-side {
+    filter: brightness(0.85) drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
+    z-index: 20;
+}
+
+/* === ANIMACIONES === */
+@keyframes sunPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.03);
+    }
+}
+
+@keyframes reflectionShimmer {
+
+    0%,
+    100% {
+        opacity: 0.8;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.4);
+    }
+}
+
+@keyframes dolphinJump {
+
+    0%,
+    100% {
+        opacity: 0;
+        transform: translateY(0);
+    }
+
+    15% {
+        opacity: 0.8;
+    }
+
+    40% {
+        transform: translateY(-60px) rotate(-15deg);
+        opacity: 0.8;
+    }
+
+    60% {
+        transform: translateY(-70px) rotate(15deg);
+        opacity: 0.8;
+    }
+
+    85% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes fishSwim {
+
+    0%,
+    100% {
+        opacity: 0;
+        transform: translateX(0);
+    }
+
+    30% {
+        opacity: 0.7;
+        transform: translateX(30px) translateY(-10px);
+    }
+
+    70% {
+        opacity: 0.7;
+        transform: translateX(-30px) translateY(-15px);
+    }
+}
+
+@keyframes heartbeat {
+    0% {
+        transform: scale(1);
+    }
+
+    15% {
+        transform: scale(1.1);
+    }
+
+    30% {
+        transform: scale(1);
+    }
+
+    45% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes pulseSlow {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+@keyframes gatherBouquet {
+    0% {
+        transform: translateY(0) scale(0.5);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-120vh) scale(1) rotate(20deg);
+        opacity: 0;
+    }
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 0.9;
+    }
+
+    100% {
+        transform: translateY(-120vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes sparkleFloat {
+    0% {
+        transform: translateY(0) scale(0.5);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        transform: translateY(-100vh) scale(0.5);
+        opacity: 0;
+    }
+}
+
+@keyframes heartFloat {
+    0% {
+        transform: translateY(0) scale(0.6);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: translateY(-110vh) scale(0.7);
+        opacity: 0;
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-8px);
+    }
+
+    75% {
+        transform: translateX(8px);
+    }
+}
+
+@keyframes shakeTree {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    20% {
+        transform: translate(-3px, -2px);
+    }
+
+    40% {
+        transform: translate(3px, 1px);
+    }
+
+    60% {
+        transform: translate(-2px, 1px);
+    }
+
+    80% {
+        transform: translate(2px, -1px);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes titleGlow {
+
+    0%,
+    100% {
+        text-shadow: 0 0 20px var(--sun-glow), 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    50% {
+        text-shadow: 0 0 40px var(--sun-glow), 0 0 60px var(--sky-pink), 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+@keyframes sway {
+
+    0%,
+    100% {
+        transform: rotate(-5deg);
+    }
+
+    50% {
+        transform: rotate(5deg);
+    }
+}
+
+.shaking {
+    animation: shakeTree 0.5s;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .sun {
+        width: 130px;
+        height: 130px;
+    }
+
+    .sun-container {
+        bottom: 32%;
+    }
+
+    #canvas-tree {
+        width: 100% !important;
+        height: 50% !important;
+        top: auto !important;
+        bottom: 20% !important;
+    }
+
+    #pantalla-final {
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 20px;
+    }
+
+    .final-content {
+        width: 95%;
+        margin: 10px auto 220px auto;
+        padding: 20px;
+    }
+
+    .slideshow-container {
+        width: 150px;
+        height: 150px;
+    }
+
+    .titulo-final {
+        font-size: 1.6rem;
+    }
+
+    .titulo-animado {
+        font-size: 2.2rem;
+    }
+
+    .btn-corazon {
+        width: 150px;
+        height: 135px;
+    }
+
+    .btn-corazon .heart-shape::before,
+    .btn-corazon .heart-shape::after {
+        width: 75px;
+        height: 115px;
+    }
+
+    .btn-corazon .heart-shape::before {
+        left: 75px;
+    }
+
+    .btn-corazon span {
+        font-size: 0.85rem;
+    }
+
+    .tiny-member {
+        height: 90px;
+    }
+
+    .member-center {
+        height: 130px;
+    }
+
+    .corner-decoration {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .titulo-animado {
+        font-size: 1.8rem;
+    }
+
+    .btn-inicio {
+        padding: 15px 35px;
+        font-size: 1.1rem;
+    }
+
+    .titulo-final {
+        font-size: 1.4rem;
+    }
+
+    .btn-corazon {
+        width: 130px;
+        height: 115px;
+    }
+
+    .btn-corazon .heart-shape::before,
+    .btn-corazon .heart-shape::after {
+        width: 65px;
+        height: 100px;
+    }
+
+    .btn-corazon .heart-shape::before {
+        left: 65px;
+    }
+
+    .btn-corazon span {
+        font-size: 0.75rem;
+    }
+
+    .tiny-member {
+        height: 70px;
+    }
+
+    .member-center {
+        height: 100px;
+    }
+}
+
+/* === MENSAJE DE AMOR (COMPACTO CON BORDES VISIBLES) === */
+.mensaje-amor {
+    text-align: center;
+    padding: 1.2rem 1.5rem;
+    max-width: 380px;
+    max-height: 55vh;
+    overflow-y: auto;
+    margin: 0 auto;
+    /* Bordes visibles y elegantes */
+    background: rgba(255, 250, 245, 0.92);
+    backdrop-filter: blur(8px);
+    border: 2px solid rgba(180, 140, 100, 0.4);
+    border-radius: 15px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* Scrollbar elegante para la carta */
+.mensaje-amor::-webkit-scrollbar {
+    width: 6px;
+}
+
+.mensaje-amor::-webkit-scrollbar-track {
+    background: rgba(180, 140, 100, 0.1);
+    border-radius: 3px;
+}
+
+.mensaje-amor::-webkit-scrollbar-thumb {
+    background: rgba(180, 140, 100, 0.4);
+    border-radius: 3px;
+}
+
+.mensaje-amor::-webkit-scrollbar-thumb:hover {
+    background: rgba(180, 140, 100, 0.6);
+}
+
+
+.mensaje-amor p {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #4a3535;
+    margin-bottom: 1.2rem;
+    text-align: justify;
+    text-indent: 1.5rem;
+    font-style: italic;
+}
+
+.mensaje-amor p:last-of-type:not(.firma-amor) {
+    margin-bottom: 1.5rem;
+}
+
+.mensaje-amor .firma-amor {
+    font-family: 'Dancing Script', 'Brush Script MT', cursive;
+    font-size: 1.8rem;
+    color: var(--passion-red);
+    font-style: normal;
+    text-align: center;
+    text-indent: 0;
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    animation: heartPulse 2s ease-in-out infinite;
+}
+
+@keyframes heartPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Ajustes responsivos para el mensaje */
+@media (max-width: 768px) {
+    .mensaje-amor p {
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+
+    .mensaje-amor .firma-amor {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .mensaje-amor {
+        padding: 1rem;
+    }
+
+    .mensaje-amor p {
+        font-size: 0.85rem;
+        line-height: 1.6;
+        text-indent: 1rem;
+    }
+
+    .mensaje-amor .firma-amor {
+        font-size: 1.3rem;
+    }
+}
+
+/* === RESPONSIVE CAJA DE REGALO === */
+@media (max-width: 768px) {
+    .gift-instruction {
+        font-size: 1.5rem;
+        padding: 0 20px;
+        text-align: center;
+    }
+
+    .gift-box {
+        width: 120px;
+        height: 120px;
+    }
+
+    .gift-message {
+        font-size: 1rem;
+    }
+
+    /* Ajustar escala de crecimiento para móviles */
+    .gift-box.grow-1 {
+        transform: scale(1.15);
+    }
+
+    .gift-box.grow-2 {
+        transform: scale(1.3);
+    }
+
+    .gift-box.grow-3 {
+        transform: scale(1.5);
+    }
+
+    .gift-box.grow-4 {
+        transform: scale(1.7);
+    }
+
+    .gift-box.grow-5 {
+        transform: scale(1.9);
+    }
+}
+
+@media (max-width: 480px) {
+    .gift-instruction {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+
+    .gift-box {
+        width: 100px;
+        height: 100px;
+    }
+
+    .gift-message {
+        font-size: 0.9rem;
+        margin-top: 20px;
+    }
+
+    .gift-box.grow-1 {
+        transform: scale(1.2);
+    }
+
+    .gift-box.grow-2 {
+        transform: scale(1.4);
+    }
+
+    .gift-box.grow-3 {
+        transform: scale(1.6);
+    }
+
+    .gift-box.grow-4 {
+        transform: scale(1.8);
+    }
+
+    .gift-box.grow-5 {
+        transform: scale(2);
+    }
+}
+
+/* === RESPONSIVE PARA DIFERENTES ASPECT RATIOS === */
+
+/* 16:10 displays (1920x1200, etc) */
+@media (min-aspect-ratio: 16/10) and (max-aspect-ratio: 16/9) {
+    .final-content {
+        max-width: 380px;
+        padding: 25px;
+    }
+
+    #canvas-tree {
+        max-width: 55vw;
+    }
+}
+
+/* Pantallas altas (más espacio vertical) */
+@media (min-height: 900px) {
+    .gift-intro-container {
+        padding: 40px 20px;
+    }
+
+    .gift-box {
+        width: 180px;
+        height: 180px;
+    }
+
+    .gift-instruction {
+        font-size: 2.2rem;
+    }
+}
+
+/* Samsung A54 y dispositivos similares (412x915 aprox) */
+@media (max-width: 450px) and (min-height: 800px) {
+    .gift-intro-container {
+        padding: 30px 15px;
+        min-height: 100dvh;
+        /* dynamic viewport height */
+    }
+
+    .gift-box {
+        width: 110px;
+        height: 110px;
+    }
+
+    .final-content {
+        width: 92%;
+        padding: 20px;
+        margin-bottom: 40px;
+    }
+
+    .mensaje-amor p {
+        font-size: 0.85rem;
+        line-height: 1.6;
+    }
+
+    .slideshow-container {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+/* === EVITAR RESETEO CON ZOOM === */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    /* Dynamic viewport height para móviles */
+}
+
+.pantalla {
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+/* Mantener estado visual durante cambios de zoom */
+.pantalla.activa {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.pantalla.hidden {
+    display: none !important;
+}
+
+/* === AVES SILUETA - REPRESENTANDO A LA PAREJA === */
+.love-birds {
+    position: absolute;
+    top: 25%;
+    left: 30%;
+    width: 200px;
+    height: 100px;
+    z-index: 4;
+    animation: birdsFloat 20s ease-in-out infinite;
+}
+
+.bird {
+    position: absolute;
+    filter: brightness(0) opacity(0.4);
+}
+
+.bird-1 {
+    left: 0;
+    top: 10px;
+    transform: scale(0.9);
+}
+
+.bird-2 {
+    left: 45px;
+    top: 0;
+    transform: scale(1);
+}
+
+.bird-body {
+    width: 30px;
+    height: 12px;
+    background: #2d2d2d;
+    border-radius: 50% 20% 20% 50%;
+    position: relative;
+}
+
+.bird-body::before {
+    content: '';
+    position: absolute;
+    right: -8px;
+    top: 3px;
+    width: 12px;
+    height: 6px;
+    background: #2d2d2d;
+    border-radius: 0 50% 50% 0;
+}
+
+/* Cabeza del ave */
+.bird-body::after {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    background: #2d2d2d;
+    border-radius: 50%;
+}
+
+.bird-wing {
+    position: absolute;
+    top: -8px;
+    left: 8px;
+    width: 18px;
+    height: 15px;
+    background: #2d2d2d;
+    border-radius: 50% 50% 0 0;
+    transform-origin: bottom center;
+    animation: wingFlap 0.4s ease-in-out infinite alternate;
+}
+
+.bird-2 .bird-wing {
+    animation-delay: 0.2s;
+}
+
+@keyframes wingFlap {
+    0% {
+        transform: rotate(-15deg) scaleY(0.8);
+    }
+
+    100% {
+        transform: rotate(25deg) scaleY(1);
+    }
+}
+
+@keyframes birdsFloat {
+    0% {
+        transform: translate(-100px, 0);
+    }
+
+    25% {
+        transform: translate(20vw, -20px);
+    }
+
+    50% {
+        transform: translate(40vw, 10px);
+    }
+
+    75% {
+        transform: translate(20vw, -15px);
+    }
+
+    100% {
+        transform: translate(-100px, 0);
+    }
+}
+
+/* ==========================================
+   VFX ENHANCEMENTS - MAKOTO SHINKAI STYLE
+   Global Illumination & Directional Lighting
+   ========================================== */
+
+/* === 1. GLOBAL SUNSET OVERLAY (Color Grading) === */
+.flower-field::before {
+    content: '';
+    position: absolute;
+    top: -200%;
+    left: 0;
+    width: 100%;
+    height: 400%;
+    background: radial-gradient(ellipse 120% 80% at 75% 20%,
+            rgba(255, 180, 120, 0.35) 0%,
+            rgba(255, 140, 80, 0.2) 25%,
+            rgba(255, 100, 60, 0.1) 45%,
+            transparent 65%);
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+    z-index: 100;
+}
+
+/* === 2. ANIME CLOUDS CON BASE VIOLETA === */
+.sun::before,
+.sun::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    mix-blend-mode: screen;
+}
+
+/* Nubes anime estilizadas - más anchas y con sombra violeta */
+.clouds-container {
+    position: absolute;
+    top: 8%;
+    left: 0;
+    width: 100%;
+    height: 25%;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.anime-cloud {
+    position: absolute;
+    background: linear-gradient(180deg,
+            rgba(255, 248, 240, 0.95) 0%,
+            rgba(255, 230, 210, 0.9) 40%,
+            rgba(255, 200, 170, 0.7) 70%,
+            rgba(180, 160, 180, 0.4) 100%);
+    border-radius: 100px 100px 20px 20px;
+    filter: blur(1px);
+}
+
+/* Sombra violeta en base de nubes */
+.anime-cloud::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 10%;
+    width: 80%;
+    height: 15px;
+    background: radial-gradient(ellipse at center,
+            rgba(140, 120, 160, 0.5) 0%,
+            transparent 70%);
+    border-radius: 50%;
+    filter: blur(4px);
+}
+
+.anime-cloud-1 {
+    left: 5%;
+    top: 20%;
+    width: 180px;
+    height: 50px;
+    animation: cloudDrift 45s ease-in-out infinite;
+}
+
+.anime-cloud-2 {
+    left: 25%;
+    top: 35%;
+    width: 220px;
+    height: 60px;
+    opacity: 0.85;
+    animation: cloudDrift 55s ease-in-out infinite reverse;
+}
+
+.anime-cloud-3 {
+    left: 60%;
+    top: 15%;
+    width: 280px;
+    height: 70px;
+    opacity: 0.9;
+    animation: cloudDrift 40s ease-in-out infinite;
+}
+
+.anime-cloud-4 {
+    left: 80%;
+    top: 45%;
+    width: 160px;
+    height: 45px;
+    opacity: 0.75;
+    animation: cloudDrift 50s ease-in-out infinite reverse;
+}
+
+@keyframes cloudDrift {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(30px);
+    }
+}
+
+/* === 3. MONTAÑAS CON ILUMINACIÓN DIRECCIONAL === */
+/* Override mountain layers with diagonal gradients for 3D volume */
+.mountain-svg .mountain-layer-1 path:first-child {
+    fill: url(#sunsetMountainFar) !important;
+}
+
+.mountain-svg .mountain-layer-2 path:first-child {
+    fill: url(#sunsetMountainMid) !important;
+}
+
+/* Añadir gradientes dinámicos a montañas via SVG defs */
+.mountains-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse 80% 60% at 50% 15%,
+            rgba(255, 200, 150, 0.25) 0%,
+            rgba(255, 160, 100, 0.15) 30%,
+            rgba(255, 140, 80, 0.08) 50%,
+            transparent 70%);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 8;
+}
+
+/* Sombras en lado izquierdo de montañas */
+.mountains-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            rgba(40, 30, 60, 0.2) 0%,
+            transparent 100%);
+    pointer-events: none;
+    z-index: 7;
+}
+
+/* === 4. TEXTURA DE HIERBA ENTRE FLORES === */
+.flowers-container::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 40'%3E%3Cpath d='M5,40 Q5,30 6,25 Q7,20 5,15' stroke='%234a6838' stroke-width='0.8' fill='none'/%3E%3Cpath d='M8,40 Q9,28 7,20' stroke='%235a7848' stroke-width='0.6' fill='none'/%3E%3Cpath d='M15,40 Q14,32 16,26 Q15,22 14,18' stroke='%234a6838' stroke-width='0.7' fill='none'/%3E%3Cpath d='M25,40 Q26,30 24,22' stroke='%235a7848' stroke-width='0.6' fill='none'/%3E%3Cpath d='M35,40 Q34,33 36,28 Q35,24 34,20' stroke='%234a6838' stroke-width='0.8' fill='none'/%3E%3Cpath d='M45,40 Q46,31 44,24' stroke='%235a7848' stroke-width='0.6' fill='none'/%3E%3Cpath d='M55,40 Q54,34 56,28 Q55,23 54,18' stroke='%234a6838' stroke-width='0.7' fill='none'/%3E%3Cpath d='M65,40 Q66,30 64,23' stroke='%235a7848' stroke-width='0.6' fill='none'/%3E%3Cpath d='M75,40 Q74,32 76,26 Q75,21 74,16' stroke='%234a6838' stroke-width='0.8' fill='none'/%3E%3Cpath d='M85,40 Q86,29 84,22' stroke='%235a7848' stroke-width='0.6' fill='none'/%3E%3Cpath d='M95,40 Q94,33 96,27 Q95,22 94,17' stroke='%234a6838' stroke-width='0.7' fill='none'/%3E%3C/svg%3E");
+    background-size: 60px 30px;
+    background-repeat: repeat;
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* === 5. ÁRBOL CON RIM LIGHT Y TONO CÁLIDO === */
+#canvas-tree {
+    filter:
+        sepia(0.15) saturate(1.2) drop-shadow(4px -2px 0 rgba(255, 180, 100, 0.3)) drop-shadow(6px -4px 8px rgba(255, 140, 60, 0.2));
+}
+
+/* Overlay dorado sutil sobre el árbol */
+.final-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse 60% 40% at 70% 30%,
+            rgba(255, 200, 130, 0.08) 0%,
+            transparent 60%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* === 6. PAREJA CON ILUMINACIÓN DE BORDE === */
+.couple-silhouette {
+    filter: drop-shadow(3px 0 0 rgba(255, 180, 120, 0.4));
+}
+
+.person {
+    position: relative;
+}
+
+.person::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -2px;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(180deg,
+            rgba(255, 200, 150, 0.5) 0%,
+            rgba(255, 160, 100, 0.3) 50%,
+            transparent 100%);
+    filter: blur(1px);
+}
+
+/* === 7. INTENSIFICAR GOD RAYS (desde centro-top, alineado con el sol) === */
+.god-rays {
+    background: radial-gradient(ellipse 100% 80% at 50% 10%,
+            rgba(255, 240, 200, 0.5) 0%,
+            rgba(255, 200, 140, 0.35) 20%,
+            rgba(255, 160, 100, 0.2) 40%,
+            rgba(255, 120, 80, 0.1) 60%,
+            transparent 80%) !important;
+    opacity: 0.8 !important;
+}
+
+/* === 8. BLOOM ATMOSFÉRICO GLOBAL (Unificación de Color) === */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to top,
+            rgba(255, 100, 50, 0.12) 0%,
+            rgba(255, 150, 80, 0.08) 30%,
+            rgba(255, 180, 120, 0.04) 60%,
+            transparent 100%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* === 9. RUIDO DE TEXTURA EN MONTAÑAS (Painterly Effect) === */
+.mountain-svg {
+    position: relative;
+}
+
+.mountain-svg::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='mountainNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23mountainNoise)'/%3E%3C/svg%3E");
+    opacity: 0.08;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+}
+
+/* === 10. ÁRBOL - TRONCO MARRÓN CON RIM LIGHT CÁLIDO === */
+/* Override del color negro del árbol a marrón café profundo */
+#canvas-tree {
+    filter:
+        sepia(0.25) saturate(1.3) hue-rotate(-10deg) drop-shadow(5px -3px 0 rgba(255, 160, 80, 0.35)) drop-shadow(8px -5px 12px rgba(255, 120, 50, 0.25)) !important;
+}
+
+/* ============================================================
+   11. CAMINO NUPCIAL DE PÉTALOS
+   ============================================================ */
+.wedding-path {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18%;
+    height: 32%;
+    z-index: 4;
+    pointer-events: none;
+    background-image:
+        radial-gradient(circle, rgba(255, 192, 203, 0.8) 20%, transparent 20%),
+        radial-gradient(circle, rgba(255, 255, 255, 0.6) 20%, transparent 20%),
+        radial-gradient(circle, rgba(255, 182, 193, 0.5) 15%, transparent 15%);
+    background-size: 30px 30px, 24px 24px, 18px 18px;
+    background-position: 0 0, 12px 15px, 6px 8px;
+    box-shadow:
+        inset 10px 0 15px rgba(0, 0, 0, 0.15),
+        inset -10px 0 15px rgba(0, 0, 0, 0.15);
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.6) 60%, transparent 100%);
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.6) 60%, transparent 100%);
+    clip-path: polygon(35% 0%, 65% 0%, 100% 100%, 0% 100%);
+}
+
+/* ============================================================
+   SKYWRITING — Estela del avión "TE AMO"
+   ============================================================ */
+#skywriting-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 16;
+    pointer-events: none;
+}
+
+#skywriting-canvas.skywriting-done {
+    animation: skywritingFloat 6s ease-in-out infinite;
+}
+
+#skywriting-plane {
+    position: absolute;
+    z-index: 17;
+    pointer-events: none;
+}
+
+@keyframes skywritingFloat {
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    20% {
+        transform: translate(2px, -1.5px) rotate(0.15deg);
+    }
+
+    40% {
+        transform: translate(-1px, 1px) rotate(-0.1deg);
+    }
+
+    60% {
+        transform: translate(1.5px, -2px) rotate(0.12deg);
+    }
+
+    80% {
+        transform: translate(-2px, 0.5px) rotate(-0.08deg);
+    }
+}
+
+/* ============================================================
+   12. HOJAS CAYENDO (Partículas)
+   ============================================================ */
+.falling-leaves-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 12;
+    overflow: hidden;
+}
+
+.falling-leaf {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+.falling-leaf svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* ============================================================
+   13. INGENIERÍA RESPONSIVA — SOPORTE TOTAL
+   ============================================================ */
+
+@media screen and (max-width: 480px) {
+    .field-background {
+        min-height: 100vh;
+        min-height: 100dvh;
+    }
+
+    .anime-sun {
+        top: 8%;
+        left: 50%;
+    }
+
+    .sun-core {
+        width: 80px;
+        height: 80px;
+    }
+
+    .sun-glow {
+        width: 60px;
+        height: 60px;
+    }
+
+    .sun-rays {
+        width: 70px;
+        height: 70px;
+    }
+
+    .couple-silhouette {
+        bottom: 22%;
+        transform: translateX(-50%) scale(1.8);
+    }
+
+    .couple-contact-shadow {
+        width: 40px;
+    }
+
+    .mountains-container {
+        height: 55%;
+        bottom: -3%;
+    }
+
+    .flower-field {
+        height: 35%;
+    }
+
+    .wedding-path {
+        width: 25%;
+        height: 28%;
+    }
+
+    .anime-cloud {
+        transform: scale(0.6);
+    }
+
+    .vignette-overlay {
+        background: radial-gradient(ellipse 80% 70% at 50% 50%,
+                transparent 40%, rgba(20, 30, 20, 0.3) 80%, rgba(10, 15, 10, 0.5) 100%);
+    }
+
+    #canvas-tree {
+        max-width: 35vw !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .anime-sun {
+        top: 10%;
+        left: 50%;
+    }
+
+    .sun-core {
+        width: 100px;
+        height: 100px;
+    }
+
+    .sun-glow {
+        width: 80px;
+        height: 80px;
+    }
+
+    .sun-rays {
+        width: 90px;
+        height: 90px;
+    }
+
+    .couple-silhouette {
+        bottom: 24%;
+        transform: translateX(-50%) scale(1.2);
+    }
+
+    .mountains-container {
+        height: 60%;
+    }
+
+    .wedding-path {
+        width: 22%;
+    }
+
+    .clouds-container {
+        transform: scale(0.7);
+    }
+
+    #canvas-tree {
+        max-width: 40vw !important;
+    }
+
+    .corner-decoration {
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .anime-sun {
+        top: 12%;
+        left: 50%;
+    }
+
+    .sun-core {
+        width: 140px;
+        height: 140px;
+    }
+
+    .couple-silhouette {
+        bottom: 26%;
+    }
+}
+
+@media screen and (min-width: 1921px) {
+    .field-background {
+        min-height: 100vh;
+    }
+
+    .sun-core {
+        width: clamp(180px, 12vw, 350px);
+        height: clamp(180px, 12vw, 350px);
+    }
+
+    .sun-glow {
+        width: clamp(120px, 8vw, 250px);
+        height: clamp(120px, 8vw, 250px);
+    }
+
+    .sun-rays {
+        width: clamp(160px, 10vw, 300px);
+        height: clamp(160px, 10vw, 300px);
+    }
+
+    .couple-silhouette {
+        bottom: 28%;
+        transform: translateX(-50%) scale(1.3);
+    }
+
+    .couple-contact-shadow {
+        width: 65px;
+        height: 10px;
+    }
+
+    .mountains-container {
+        height: 75%;
+    }
+
+    .wedding-path {
+        width: 15%;
+    }
+
+    .person-him {
+        height: clamp(55px, 4vw, 90px);
+    }
+
+    .person-her {
+        height: clamp(50px, 3.5vw, 80px);
+    }
+}
+
+@media screen and (min-width: 2561px) {
+    .sun-core {
+        width: 14vw;
+        height: 14vw;
+    }
+
+    .couple-silhouette {
+        transform: translateX(-50%) scale(1.6);
+    }
+
+    .mountains-container {
+        height: 80%;
+    }
+
+    .flower-field {
+        height: 35%;
+    }
+}
+
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .field-background {
+        min-height: 100vh;
+        min-height: 100dvh;
+    }
+
+    .mountains-container {
+        height: 80%;
+        bottom: -8%;
+    }
+
+    .couple-silhouette {
+        bottom: 18%;
+        transform: translateX(-50%) scale(0.9);
+    }
+
+    .flower-field {
+        height: 40%;
+    }
+
+    .anime-sun {
+        top: 5%;
+        left: 50%;
+    }
+
+    .sun-core {
+        width: 60px;
+        height: 60px;
+    }
+
+    .wedding-path {
+        height: 40%;
+    }
+}
+
+@media screen and (min-height: 501px) and (max-height: 800px) and (orientation: landscape) {
+    .mountains-container {
+        height: 75%;
+        bottom: -5%;
+    }
+
+    .couple-silhouette {
+        bottom: 22%;
+    }
+}
+
+@media print {
+
+    .vignette-overlay,
+    .noise-overlay,
+    .falling-leaves-container,
+    .butterflies-container {
+        display: none !important;
+    }
+
+    * {
+        animation: none !important;
+    }
+}
