@@ -920,18 +920,16 @@ body {
     pointer-events: none;
 }
 
-/* Capa 1: Colina Lejana — más alta, gris-pizarra, suave blur atmosférico */
+/* Capa 1: Colina Lejana — perspectiva atmosférica por color, sin blur */
 .hill-back {
     height: 70%;
     z-index: 1;
-    filter: blur(2px);
 }
 
 /* Capa 2: Colina Media-Lejana */
 .hill-mid-back {
     height: 58%;
     z-index: 2;
-    filter: blur(0.5px);
 }
 
 /* Capa 3: Colina Media (plano de los personajes) */
@@ -944,7 +942,6 @@ body {
 .hill-front {
     height: 38%;
     z-index: 4;
-    filter: drop-shadow(0 -2px 8px rgba(0, 0, 0, 0.15));
 }
 
 /* God Rays / Bloom Effect - Radiando desde el sol centrado hacia abajo */
@@ -994,20 +991,9 @@ body {
             rgba(10, 15, 10, 0.45) 100%);
 }
 
-/* === FILM GRAIN / NOISE OVERLAY === */
+/* === FILM GRAIN / NOISE OVERLAY === DESACTIVADO para rendimiento móvil */
 .noise-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 51;
-    opacity: 0.06;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 256px 256px;
+    display: none;
 }
 
 
@@ -1375,9 +1361,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.12;
-    mix-blend-mode: overlay;
+    opacity: 0;
     pointer-events: none;
 }
 
@@ -1470,42 +1454,15 @@ body {
     display: none;
 }
 
-/* === FLORES SVG ORGÁNICAS (Tipos) === */
 
-/* Margarita con pétalos */
-.flower-daisy {
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
-}
 
-/* Tulipán elegante */
-.flower-tulip {
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-}
-
-/* Lavanda delicada */
-.flower-lavender {
-    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
-}
-
-/* Rosa romántica */
-.flower-rose {
-    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
-}
-
-/* Flor silvestre simple */
-.flower-wild {
-    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
-}
-
-/* Flores lejanas: más borrosas y desaturadas */
+/* Flores lejanas: solo opacidad */
 .flower-distant {
-    filter: blur(0.5px) saturate(0.7);
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
-/* Flores cercanas: más nítidas y saturadas */
+/* Flores cercanas */
 .flower-close {
-    filter: saturate(1.1);
     opacity: 1;
 }
 
@@ -1524,7 +1481,6 @@ body {
 .butterfly {
     position: absolute;
     opacity: 0.85;
-    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
 }
 
 /* Mariposa 1: Grande, movimiento lento */
@@ -1535,13 +1491,9 @@ body {
     animation: butterflyFly1 20s ease-in-out infinite;
 }
 
-/* Mariposa 2: Mediana, movimiento hacia arriba */
+/* Mariposa 2: DESACTIVADA para rendimiento */
 .butterfly-2 {
-    left: 25%;
-    top: 50%;
-    font-size: 1.6rem;
-    animation: butterflyFly2 18s ease-in-out infinite;
-    animation-delay: 3s;
+    display: none;
 }
 
 /* Mariposa 3: Pequeña, movimiento rápido */
@@ -1553,13 +1505,9 @@ body {
     animation-delay: 1s;
 }
 
-/* Mariposa 4: Grande, cerca del sol */
+/* Mariposa 4: DESACTIVADA para rendimiento */
 .butterfly-4 {
-    left: 60%;
-    top: 10%;
-    font-size: 1.8rem;
-    animation: butterflyFly4 22s ease-in-out infinite;
-    animation-delay: 7s;
+    display: none;
 }
 
 /* Mariposa 5: Mediana, movimiento bajo */
@@ -1571,13 +1519,9 @@ body {
     animation-delay: 5s;
 }
 
-/* Mariposa 6: Pequeña, zigzag */
+/* Mariposa 6: DESACTIVADA para rendimiento */
 .butterfly-6 {
-    left: 85%;
-    top: 35%;
-    font-size: 1.1rem;
-    animation: butterflyFly6 14s ease-in-out infinite;
-    animation-delay: 9s;
+    display: none;
 }
 
 /* Mariposa 7: Muy grande, primer plano */

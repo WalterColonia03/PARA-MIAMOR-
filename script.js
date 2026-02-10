@@ -211,11 +211,11 @@ function generateOrganicFlowers() {
         </svg>`;
     }
 
-    // === CONFIGURACIÓN DE 3 BANDAS DE PROFUNDIDAD (con solapamiento del 5%) ===
+    // === CONFIGURACIÓN OPTIMIZADA DE 3 BANDAS (rendimiento móvil) ===
     const depthBands = [
-        { name: 'back', flowers: 55, grass: 40, yMin: 38, yMax: 58, sizeMin: 6, sizeMax: 10, opacity: 0.5, blur: 0.5, zBase: 1, cssClass: 'flower-distant' },
-        { name: 'mid', flowers: 90, grass: 50, yMin: 52, yMax: 78, sizeMin: 14, sizeMax: 22, opacity: 0.8, blur: 0, zBase: 4, cssClass: '' },
-        { name: 'front', flowers: 70, grass: 35, yMin: 73, yMax: 100, sizeMin: 28, sizeMax: 42, opacity: 1.0, blur: 1, zBase: 7, cssClass: 'flower-close' }
+        { name: 'back', flowers: 25, grass: 15, yMin: 38, yMax: 58, sizeMin: 6, sizeMax: 10, opacity: 0.5, zBase: 1, cssClass: 'flower-distant' },
+        { name: 'mid', flowers: 40, grass: 20, yMin: 52, yMax: 78, sizeMin: 14, sizeMax: 22, opacity: 0.8, zBase: 4, cssClass: '' },
+        { name: 'front', flowers: 30, grass: 12, yMin: 73, yMax: 100, sizeMin: 28, sizeMax: 42, opacity: 1.0, zBase: 7, cssClass: 'flower-close' }
     ];
 
     depthBands.forEach(band => {
@@ -241,19 +241,16 @@ function generateOrganicFlowers() {
             flowerEl.innerHTML = flowerSVG;
 
             const bottomPercent = (yPercent - 38) * 1.6; // Mapear a posición en campo
-            const filterStr = band.blur > 0 ? `filter: blur(${band.blur}px);` : '';
 
             flowerEl.style.cssText = `
                 position: absolute;
                 left: ${xPercent}%;
                 bottom: ${Math.max(0, Math.min(90, bottomPercent))}%;
                 transform: translateX(-50%);
-                --sway-duration: ${swayDuration}s;
-                --sway-delay: ${swayDelay}s;
                 opacity: ${band.opacity - 0.1 + depthInBand * 0.2};
                 z-index: ${band.zBase + Math.floor(depthInBand * 3)};
-                ${filterStr}
                 animation: flowerSway ${swayDuration}s ease-in-out ${swayDelay}s infinite;
+                will-change: transform;
             `;
 
             if (band.cssClass && flowerEl.firstElementChild) {
@@ -277,8 +274,6 @@ function generateOrganicFlowers() {
             const grassEl = document.createElement('div');
             grassEl.innerHTML = grassSVG;
 
-            const filterStr = band.blur > 0 ? `filter: blur(${band.blur * 0.5}px);` : '';
-
             grassEl.style.cssText = `
                 position: absolute;
                 left: ${xPercent}%;
@@ -286,114 +281,117 @@ function generateOrganicFlowers() {
                 transform: translateX(-50%);
                 opacity: ${band.opacity * 0.7};
                 z-index: ${band.zBase + Math.floor(depthInBand * 3)};
-                ${filterStr}
                 animation: grassSway ${swayDuration}s ease-in-out ${swayDelay}s infinite;
+                will-change: transform;
             `;
 
             container.appendChild(grassEl);
         }
     });
 
-    console.log('Flores orgánicas con profundidad generadas: 215 flores + 125 briznas de pasto');
+    console.log('Flores orgánicas optimizadas: 95 flores + 47 briznas de pasto');
 }
 
 
-/* === SISTEMA DE LLUVIA DE HOJAS (Partículas Infinitas con requestAnimationFrame) === */
+/* === SISTEMA DE HOJAS CAYENDO — SINGLE CANVAS (Alto rendimiento) === */
 function createFallingLeaves() {
     const container = document.getElementById('falling-leaves-container');
     if (!container) return;
 
+    // Crear canvas único para todas las hojas
+    const canvas = document.createElement('canvas');
+    canvas.id = 'leaves-canvas';
+    canvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10;';
+    container.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
     const LEAF_COLORS = ['#D95204', '#FF9F1C', '#C75B12', '#E87C3F', '#B8450A', '#FFB347'];
-    const MAX_LEAVES = 30;    // Máximo en pantalla (rendimiento)
-    const SPAWN_INTERVAL = 800; // ms entre cada hoja nueva
-    let activeLeaves = [];
+    const MAX_LEAVES = 18;
+    const SPAWN_INTERVAL = 1200;
+    let leaves = [];
     let lastSpawnTime = 0;
     let animationId;
 
-    // SVG de hoja orgánica
-    function createLeafSVG(color) {
-        const size = 10 + Math.random() * 14; // 10-24px
-        return {
-            size,
-            html: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none">
-                <path d="M12,2 Q18,6 20,12 Q18,18 12,22 Q6,18 4,12 Q6,6 12,2 Z" fill="${color}" opacity="0.85"/>
-                <path d="M12,4 Q12,12 12,20" stroke="${color}" stroke-width="0.8" opacity="0.5" stroke-dasharray="2 1"/>
-            </svg>`
-        };
-    }
-
-    // Crear nueva partícula de hoja
     function spawnLeaf() {
-        if (activeLeaves.length >= MAX_LEAVES) return;
-
-        const color = LEAF_COLORS[Math.floor(Math.random() * LEAF_COLORS.length)];
-        const { size, html } = createLeafSVG(color);
-
-        const leafEl = document.createElement('div');
-        leafEl.className = 'falling-leaf';
-        leafEl.innerHTML = html;
-        leafEl.style.width = size + 'px';
-        leafEl.style.height = size + 'px';
-
-        const leaf = {
-            el: leafEl,
-            x: Math.random() * window.innerWidth,
-            y: -size - 20,
-            speedY: 0.5 + Math.random() * 1.5,   // Velocidad vertical
-            amplitude: 30 + Math.random() * 60,    // Amplitud sinusoidal horizontal
-            frequency: 0.008 + Math.random() * 0.015, // Frecuencia de oscilación
-            rotateSpeed: (Math.random() - 0.5) * 3, // Velocidad de rotación
+        if (leaves.length >= MAX_LEAVES) return;
+        leaves.push({
+            x: Math.random() * canvas.width,
+            y: -30,
+            size: 14 + Math.random() * 18,  // Más grandes: 14-32px
+            speedY: 0.4 + Math.random() * 1.0,
+            amplitude: 40 + Math.random() * 80,
+            frequency: 0.006 + Math.random() * 0.012,
+            rotateSpeed: (Math.random() - 0.5) * 2.5,
             rotation: Math.random() * 360,
-            phase: Math.random() * Math.PI * 2,      // Fase inicial
-            opacity: 0.6 + Math.random() * 0.4,
-            size
-        };
-
-        container.appendChild(leafEl);
-        activeLeaves.push(leaf);
+            phase: Math.random() * Math.PI * 2,
+            opacity: 0.65 + Math.random() * 0.35,
+            color: LEAF_COLORS[Math.floor(Math.random() * LEAF_COLORS.length)]
+        });
     }
 
-    // Loop de animación con requestAnimationFrame
+    // Dibujar una hoja como forma orgánica
+    function drawLeaf(l, cx, cy) {
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(l.rotation * Math.PI / 180);
+        ctx.globalAlpha = l.opacity;
+        ctx.fillStyle = l.color;
+        ctx.beginPath();
+        const s = l.size / 2;
+        ctx.moveTo(0, -s);
+        ctx.quadraticCurveTo(s * 0.75, -s * 0.4, s * 0.8, 0);
+        ctx.quadraticCurveTo(s * 0.75, s * 0.4, 0, s);
+        ctx.quadraticCurveTo(-s * 0.75, s * 0.4, -s * 0.8, 0);
+        ctx.quadraticCurveTo(-s * 0.75, -s * 0.4, 0, -s);
+        ctx.fill();
+        // Nervadura central
+        ctx.strokeStyle = l.color;
+        ctx.globalAlpha = l.opacity * 0.4;
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+        ctx.moveTo(0, -s * 0.8);
+        ctx.lineTo(0, s * 0.8);
+        ctx.stroke();
+        ctx.restore();
+    }
+
     function animate(timestamp) {
-        // Spawn periódico
         if (timestamp - lastSpawnTime > SPAWN_INTERVAL) {
             spawnLeaf();
             lastSpawnTime = timestamp;
         }
 
-        // Actualizar cada hoja
-        for (let i = activeLeaves.length - 1; i >= 0; i--) {
-            const leaf = activeLeaves[i];
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Movimiento sinusoidal horizontal
-            leaf.y += leaf.speedY;
-            const sinOffset = Math.sin(leaf.y * leaf.frequency + leaf.phase) * leaf.amplitude;
-            const currentX = leaf.x + sinOffset;
-            leaf.rotation += leaf.rotateSpeed;
+        for (let i = leaves.length - 1; i >= 0; i--) {
+            const l = leaves[i];
+            l.y += l.speedY;
+            l.rotation += l.rotateSpeed;
+            const sinX = Math.sin(l.y * l.frequency + l.phase) * l.amplitude;
+            drawLeaf(l, l.x + sinX, l.y);
 
-            // Aplicar transformación
-            leaf.el.style.transform = `translate(${currentX}px, ${leaf.y}px) rotate(${leaf.rotation}deg)`;
-            leaf.el.style.opacity = leaf.opacity;
-
-            // Limpiar hojas que salen de pantalla
-            if (leaf.y > window.innerHeight + leaf.size + 20) {
-                leaf.el.remove();
-                activeLeaves.splice(i, 1);
+            if (l.y > canvas.height + l.size + 30) {
+                // Reciclar hoja arriba en vez de destruir/crear
+                l.y = -l.size - 20;
+                l.x = Math.random() * canvas.width;
+                l.phase = Math.random() * Math.PI * 2;
             }
         }
 
         animationId = requestAnimationFrame(animate);
     }
 
-    // Iniciar
     animationId = requestAnimationFrame(animate);
 
-    // Limpiar al cerrar
-    window.addEventListener('beforeunload', () => {
-        cancelAnimationFrame(animationId);
-    });
-
-    console.log('Sistema de lluvia de hojas iniciado');
+    window.addEventListener('beforeunload', () => cancelAnimationFrame(animationId));
+    console.log('Hojas canvas de alto rendimiento iniciadas');
 }
 
 
@@ -980,8 +978,10 @@ function actualizarFondoDinamico(emojis) {
         setTimeout(() => div.remove(), 18000);
     };
 
-    decoracionInterval = setInterval(crearElemento, 700);
-    for (let i = 0; i < 10; i++) crearElemento();
+    decoracionInterval = setInterval(() => {
+        if (bg.childElementCount < 15) crearElemento();
+    }, 1500);
+    for (let i = 0; i < 5; i++) crearElemento();
 }
 
 /* === PANTALLA FINAL === */
