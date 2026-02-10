@@ -2693,25 +2693,29 @@ body {
         -webkit-overflow-scrolling: touch;
     }
 
-    /* Tree becomes small decorative header on mobile */
+    /* Tree preserves heart shape aspect ratio on mobile */
     #canvas-tree {
         position: relative !important;
-        width: 100% !important;
-        height: 30vh !important;
-        max-height: 250px !important;
+        width: auto !important;
+        height: 35vh !important;
+        max-height: 280px !important;
+        max-width: 90% !important;
         top: auto !important;
         left: auto !important;
         bottom: auto !important;
         z-index: 5 !important;
-        margin-bottom: 10px;
+        margin: 0 auto 5px auto;
+        display: block;
+        aspect-ratio: 1100 / 680;
+        object-fit: contain;
     }
 
-    /* Card fills the screen width on mobile */
+    /* Card narrower + shifted right so couple is visible */
     .final-content {
-        width: 92% !important;
-        max-width: none !important;
-        margin: 0 auto 20px auto !important;
-        padding: 20px 18px !important;
+        width: 78% !important;
+        max-width: 340px !important;
+        margin: 0 5% 20px auto !important;
+        padding: 18px 15px !important;
     }
 
     .slideshow-container {
@@ -3052,9 +3056,9 @@ body {
     }
 
     .final-content {
-        width: 92%;
-        padding: 20px;
-        margin-bottom: 40px;
+        width: 78%;
+        padding: 16px;
+        margin: 0 5% 20px auto;
     }
 
     .mensaje-amor p {
@@ -3632,6 +3636,7 @@ body::after {
 
     #canvas-tree {
         max-width: 35vw !important;
+        height: auto !important;
     }
 }
 
