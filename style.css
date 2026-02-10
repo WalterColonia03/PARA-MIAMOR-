@@ -753,11 +753,8 @@ body {
             rgba(255, 230, 160, 0.95) 100%);
     border-radius: 50%;
     box-shadow:
-        0 0 50px rgba(255, 250, 230, 1),
-        0 0 100px rgba(255, 230, 150, 0.9),
-        0 0 180px rgba(255, 200, 130, 0.8),
-        0 0 280px rgba(255, 180, 100, 0.6),
-        0 0 400px rgba(255, 160, 80, 0.4);
+        0 0 60px rgba(255, 250, 230, 1),
+        0 0 150px rgba(255, 200, 130, 0.6);
     animation: sunPulse 4s ease-in-out infinite;
 }
 
@@ -1008,7 +1005,7 @@ body {
     align-items: flex-end;
     gap: 0px;
     animation: coupleWalk 4s ease-in-out infinite;
-    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+    /* filter removed for mobile performance */
 }
 
 /* Sombra de contacto (pies en el suelo) */
@@ -1019,8 +1016,8 @@ body {
     transform: translateX(-50%);
     width: 50px;
     height: 8px;
-    background: radial-gradient(ellipse, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.15) 50%, transparent 80%);
-    filter: blur(4px);
+    background: radial-gradient(ellipse, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.08) 50%, transparent 80%);
+    /* filter: blur removed for performance — using softer radial-gradient instead */
     z-index: -1;
     pointer-events: none;
 }
@@ -1845,24 +1842,19 @@ body {
     line-height: 0;
 }
 
-/* Corazoncito SVG con brillo pulsante */
-.heart-star svg {
-    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
-}
+/* Corazoncito SVG — drop-shadow removed for mobile performance */
 
 @keyframes twinkleHeart {
 
     0%,
     100% {
-        opacity: 0.25;
-        filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4));
+        opacity: 0.2;
         transform: scale(0.85);
     }
 
     50% {
         opacity: 1;
-        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 1)) drop-shadow(0 0 8px rgba(255, 230, 240, 0.7));
-        transform: scale(1.1);
+        transform: scale(1.15);
     }
 }
 
@@ -1900,7 +1892,6 @@ body {
 .dolphin,
 .fish {
     position: absolute;
-    filter: brightness(0.3) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
     opacity: 0;
 }
 
@@ -1956,7 +1947,6 @@ body {
     font-size: 2.5rem;
     opacity: 0.9;
     will-change: transform;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .anim-bouquet {
@@ -1988,7 +1978,6 @@ body {
     position: absolute;
     font-size: 2.5rem;
     opacity: 0.9;
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
     animation: pulseSlow 3s infinite;
 }
 
@@ -2015,9 +2004,8 @@ body {
 /* === GLASSMORPHISM === */
 .glass-card,
 .glass-card-intro {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(245, 200, 185, 0.85);
+    /* backdrop-filter: blur() removed for mobile performance */
     border: 1px solid var(--glass-border);
     border-radius: 30px;
     padding: 30px;
@@ -2227,18 +2215,14 @@ body {
     align-items: center;
     width: 40%;
     max-width: 400px;
-    background: linear-gradient(145deg,
-            rgba(255, 250, 240, 0.95) 0%,
-            rgba(255, 240, 225, 0.92) 50%,
-            rgba(250, 230, 215, 0.95) 100%);
-    backdrop-filter: blur(15px);
+    background: rgba(255, 250, 240, 0.97);
+    /* backdrop-filter removed for mobile performance */
     padding: 30px;
     border-radius: 30px;
     border: 3px solid rgba(224, 122, 95, 0.5);
     margin-bottom: 80px;
     animation: fadeInUp 1s ease;
-    box-shadow:
-        0 8px 32px rgba(200, 150, 120, 0.3),
+    box-shadow: 0 8px 32px rgba(200, 150, 120, 0.3),
         0 0 20px rgba(255, 200, 180, 0.2),
         inset 0 0 20px rgba(255, 255, 255, 0.3);
     z-index: 20;
@@ -2397,18 +2381,16 @@ body {
 .tiny-member {
     height: 150px;
     margin: 0 -12px;
-    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
+    /* filter removed for mobile performance */
 }
 
 .member-center {
     height: 200px;
     z-index: 50;
-    filter: drop-shadow(0 0 25px rgba(255, 179, 71, 0.6));
     animation: bounce 2s infinite;
 }
 
 .member-side {
-    filter: brightness(0.85) drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
     z-index: 20;
 }
 
@@ -2689,7 +2671,7 @@ body {
     animation: shakeTree 0.5s;
 }
 
-/* === RESPONSIVE === */
+/* === RESPONSIVE MOBILE === */
 @media (max-width: 768px) {
     .sun {
         width: 130px;
@@ -2700,67 +2682,106 @@ body {
         bottom: 32%;
     }
 
-    #canvas-tree {
-        width: 100% !important;
-        height: 50% !important;
-        top: auto !important;
-        bottom: 20% !important;
-    }
-
+    /* === PANTALLA FINAL: MOBILE COLUMN LAYOUT === */
     #pantalla-final {
         flex-direction: column;
         justify-content: flex-start;
-        padding: 20px;
+        align-items: center;
+        padding: 10px 15px 120px 15px;
+        /* bottom padding for BTS */
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
+    /* Tree becomes small decorative header on mobile */
+    #canvas-tree {
+        position: relative !important;
+        width: 100% !important;
+        height: 30vh !important;
+        max-height: 250px !important;
+        top: auto !important;
+        left: auto !important;
+        bottom: auto !important;
+        z-index: 5 !important;
+        margin-bottom: 10px;
+    }
+
+    /* Card fills the screen width on mobile */
     .final-content {
-        width: 95%;
-        margin: 10px auto 220px auto;
-        padding: 20px;
+        width: 92% !important;
+        max-width: none !important;
+        margin: 0 auto 20px auto !important;
+        padding: 20px 18px !important;
     }
 
     .slideshow-container {
-        width: 150px;
-        height: 150px;
+        width: 120px;
+        height: 120px;
+        margin-bottom: 15px;
     }
 
     .titulo-final {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
     }
 
     .titulo-animado {
-        font-size: 2.2rem;
+        font-size: 1.8rem;
     }
 
     .btn-corazon {
-        width: 150px;
-        height: 135px;
+        width: 130px;
+        height: 115px;
     }
 
     .btn-corazon .heart-shape::before,
     .btn-corazon .heart-shape::after {
-        width: 75px;
-        height: 115px;
+        width: 65px;
+        height: 100px;
     }
 
     .btn-corazon .heart-shape::before {
-        left: 75px;
+        left: 65px;
     }
 
     .btn-corazon span {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
+    }
+
+    /* BTS audience smaller on mobile, not overlapping */
+    .bts-audience {
+        position: fixed;
+        bottom: -5px;
+        z-index: 15;
+        height: auto;
     }
 
     .tiny-member {
-        height: 90px;
+        height: 70px;
+        margin: 0 -8px;
     }
 
     .member-center {
-        height: 130px;
+        height: 90px;
     }
 
     .corner-decoration {
-        font-size: 2rem;
+        font-size: 1.5rem;
+    }
+
+    /* Love letter text smaller on mobile */
+    .mensaje-amor {
+        max-height: 45vh;
+        padding: 1rem;
+    }
+
+    .mensaje-amor p {
+        font-size: 0.85rem;
+        line-height: 1.6;
+        text-indent: 1rem;
+    }
+
+    .mensaje-amor .firma-amor {
+        font-size: 1.3rem;
     }
 }
 
@@ -2815,12 +2836,11 @@ body {
     overflow-y: auto;
     margin: 0 auto;
     /* Bordes visibles y elegantes */
-    background: rgba(255, 250, 245, 0.92);
-    backdrop-filter: blur(8px);
+    background: rgba(255, 250, 245, 0.95);
+    /* backdrop-filter: blur() removed for mobile performance */
     border: 2px solid rgba(180, 140, 100, 0.4);
     border-radius: 15px;
-    box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.15),
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
@@ -3202,7 +3222,6 @@ body {
             rgba(255, 140, 80, 0.2) 25%,
             rgba(255, 100, 60, 0.1) 45%,
             transparent 65%);
-    mix-blend-mode: soft-light;
     pointer-events: none;
     z-index: 100;
 }
@@ -3235,7 +3254,7 @@ body {
             rgba(255, 200, 170, 0.7) 70%,
             rgba(180, 160, 180, 0.4) 100%);
     border-radius: 100px 100px 20px 20px;
-    filter: blur(1px);
+    /* filter: blur removed for mobile performance */
 }
 
 /* Sombra violeta en base de nubes */
@@ -3250,7 +3269,7 @@ body {
             rgba(140, 120, 160, 0.5) 0%,
             transparent 70%);
     border-radius: 50%;
-    filter: blur(4px);
+    /* filter: blur removed for mobile performance */
 }
 
 .anime-cloud-1 {
@@ -3323,7 +3342,6 @@ body {
             rgba(255, 160, 100, 0.15) 30%,
             rgba(255, 140, 80, 0.08) 50%,
             transparent 70%);
-    mix-blend-mode: overlay;
     pointer-events: none;
     z-index: 8;
 }
@@ -3361,8 +3379,7 @@ body {
 
 /* === 5. ÁRBOL CON RIM LIGHT Y TONO CÁLIDO === */
 #canvas-tree {
-    filter:
-        sepia(0.15) saturate(1.2) drop-shadow(4px -2px 0 rgba(255, 180, 100, 0.3)) drop-shadow(6px -4px 8px rgba(255, 140, 60, 0.2));
+    filter: sepia(0.15) saturate(1.2) drop-shadow(4px -2px 0 rgba(255, 180, 100, 0.3)) drop-shadow(6px -4px 8px rgba(255, 140, 60, 0.2));
 }
 
 /* Overlay dorado sutil sobre el árbol */
@@ -3381,9 +3398,7 @@ body {
 }
 
 /* === 6. PAREJA CON ILUMINACIÓN DE BORDE === */
-.couple-silhouette {
-    filter: drop-shadow(3px 0 0 rgba(255, 180, 120, 0.4));
-}
+/* couple filter override removed for mobile performance */
 
 .person {
     position: relative;
@@ -3400,7 +3415,7 @@ body {
             rgba(255, 200, 150, 0.5) 0%,
             rgba(255, 160, 100, 0.3) 50%,
             transparent 100%);
-    filter: blur(1px);
+    /* filter: blur removed for performance */
 }
 
 /* === 7. INTENSIFICAR GOD RAYS (desde centro-top, alineado con el sol) === */
@@ -3427,7 +3442,7 @@ body::after {
             rgba(255, 150, 80, 0.08) 30%,
             rgba(255, 180, 120, 0.04) 60%,
             transparent 100%);
-    mix-blend-mode: screen;
+    mix-blend-mode: normal;
     pointer-events: none;
     z-index: 9999;
 }
@@ -3445,16 +3460,14 @@ body::after {
     width: 100%;
     height: 100%;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='mountainNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23mountainNoise)'/%3E%3C/svg%3E");
-    opacity: 0.08;
-    mix-blend-mode: overlay;
+    opacity: 0.06;
     pointer-events: none;
 }
 
 /* === 10. ÁRBOL - TRONCO MARRÓN CON RIM LIGHT CÁLIDO === */
 /* Override del color negro del árbol a marrón café profundo */
 #canvas-tree {
-    filter:
-        sepia(0.25) saturate(1.3) hue-rotate(-10deg) drop-shadow(5px -3px 0 rgba(255, 160, 80, 0.35)) drop-shadow(8px -5px 12px rgba(255, 120, 50, 0.25)) !important;
+    filter: sepia(0.2) saturate(1.2) !important;
 }
 
 /* ============================================================
@@ -3469,14 +3482,12 @@ body::after {
     height: 32%;
     z-index: 4;
     pointer-events: none;
-    background-image:
-        radial-gradient(circle, rgba(255, 192, 203, 0.8) 20%, transparent 20%),
+    background-image: radial-gradient(circle, rgba(255, 192, 203, 0.8) 20%, transparent 20%),
         radial-gradient(circle, rgba(255, 255, 255, 0.6) 20%, transparent 20%),
         radial-gradient(circle, rgba(255, 182, 193, 0.5) 15%, transparent 15%);
     background-size: 30px 30px, 24px 24px, 18px 18px;
     background-position: 0 0, 12px 15px, 6px 8px;
-    box-shadow:
-        inset 10px 0 15px rgba(0, 0, 0, 0.15),
+    box-shadow: inset 10px 0 15px rgba(0, 0, 0, 0.15),
         inset -10px 0 15px rgba(0, 0, 0, 0.15);
     -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.6) 60%, transparent 100%);
     mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.6) 60%, transparent 100%);

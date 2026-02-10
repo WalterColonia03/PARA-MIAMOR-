@@ -211,8 +211,13 @@ function generateOrganicFlowers() {
         </svg>`;
     }
 
-    // === CONFIGURACIÓN OPTIMIZADA DE 3 BANDAS (rendimiento móvil) ===
-    const depthBands = [
+    // === CONFIGURACIÓN OPTIMIZADA: DETECTAR MÓVIL Y REDUCIR CARGA ===
+    const isMobile = window.innerWidth <= 768;
+    const depthBands = isMobile ? [
+        { name: 'back', flowers: 10, grass: 4, yMin: 38, yMax: 58, sizeMin: 6, sizeMax: 10, opacity: 0.5, zBase: 1, cssClass: 'flower-distant' },
+        { name: 'mid', flowers: 15, grass: 5, yMin: 52, yMax: 78, sizeMin: 14, sizeMax: 22, opacity: 0.8, zBase: 4, cssClass: '' },
+        { name: 'front', flowers: 10, grass: 3, yMin: 73, yMax: 100, sizeMin: 28, sizeMax: 42, opacity: 1.0, zBase: 7, cssClass: 'flower-close' }
+    ] : [
         { name: 'back', flowers: 25, grass: 15, yMin: 38, yMax: 58, sizeMin: 6, sizeMax: 10, opacity: 0.5, zBase: 1, cssClass: 'flower-distant' },
         { name: 'mid', flowers: 40, grass: 20, yMin: 52, yMax: 78, sizeMin: 14, sizeMax: 22, opacity: 0.8, zBase: 4, cssClass: '' },
         { name: 'front', flowers: 30, grass: 12, yMin: 73, yMax: 100, sizeMin: 28, sizeMax: 42, opacity: 1.0, zBase: 7, cssClass: 'flower-close' }
@@ -313,7 +318,7 @@ function createFallingLeaves() {
     window.addEventListener('resize', resize);
 
     const LEAF_COLORS = ['#D95204', '#FF9F1C', '#C75B12', '#E87C3F', '#B8450A', '#FFB347'];
-    const MAX_LEAVES = 18;
+    const MAX_LEAVES = window.innerWidth <= 768 ? 8 : 18;
     const SPAWN_INTERVAL = 1200;
     let leaves = [];
     let lastSpawnTime = 0;
@@ -744,7 +749,8 @@ function generarEstrellasAleatorias() {
     if (!container) return;
     container.innerHTML = '';
 
-    const numCorazones = 20 + Math.floor(Math.random() * 12); // 20-32 corazoncitos
+    const isMobileStars = window.innerWidth <= 768;
+    const numCorazones = isMobileStars ? (8 + Math.floor(Math.random() * 4)) : (20 + Math.floor(Math.random() * 12)); // mobile: 8-12, desktop: 20-32
 
     for (let i = 0; i < numCorazones; i++) {
         const size = 3 + Math.random() * 5; // 3-8px (mismo rango visual que las estrellas)
@@ -978,10 +984,11 @@ function actualizarFondoDinamico(emojis) {
         setTimeout(() => div.remove(), 18000);
     };
 
+    const maxItems = window.innerWidth <= 768 ? 6 : 15;
     decoracionInterval = setInterval(() => {
-        if (bg.childElementCount < 15) crearElemento();
+        if (bg.childElementCount < maxItems) crearElemento();
     }, 1500);
-    for (let i = 0; i < 5; i++) crearElemento();
+    for (let i = 0; i < Math.min(3, maxItems); i++) crearElemento();
 }
 
 /* === PANTALLA FINAL === */
